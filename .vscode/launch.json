@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Launch via NPM",
+            "request": "launch",
+            "runtimeExecutable": "npm",
+            "args": [
+                "start"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "console": "internalConsole",
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/",
+                "!/node_modules/**"
+            ],
+            "sourceMaps": true
+        }
+    ]
+}

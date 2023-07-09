@@ -1,0 +1,16 @@
+{
+    "name": "botdiscord",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node build/."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "discord.js": "^14.11.0",
+        "ts": "^0.2.2"
+    }
+}
