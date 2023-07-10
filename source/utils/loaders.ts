@@ -1,5 +1,8 @@
 import fs from 'fs';
-import Discord, { ApplicationCommand } from 'discord.js';
+import Discord, {
+    ApplicationCommand,
+    ApplicationCommandType
+} from 'discord.js';
 import {
     PAnySelectMenuInteraction,
     PAutocomplete,
@@ -10,9 +13,7 @@ import {
     PEvent,
     PModalInteraction
 } from '../types';
-import {
-    asyncForEach,
-} from './utils';
+import { asyncForEach } from './utils';
 import config from './config';
 import {
     AUTOCOMPLETE_FOLDER,
@@ -31,7 +32,11 @@ export async function loadEvents(client: Discord.Client): Promise<void> {
     });
 
     // Parcourir chaque fichier
-    await asyncForEach(files, (file) => {
+    await asyncForEach(files, async (file) => {
+        // Vérifier que le fichier est un fichier javascript
+        // (ex. ignorer les fichiers map)
+        if (!file.name.endsWith('.js')) return;
+
         // Vérifier que le fichier est un fichier javascript
         // (ex. ignorer les fichiers map)
         if (!file.name.endsWith('.js')) return;
@@ -54,26 +59,14 @@ export async function loadEvents(client: Discord.Client): Promise<void> {
         if (file.name.startsWith('__')) return;
 
         // Lire le fichier
-        import(`../${EVENTS_FOLDER}/${file.name}`)
-            .then(
-                ({
-                    default: filedata
-                }: {
-                    default: PEvent<keyof Discord.ClientEvents>;
-                }) => {
-                    // Écouter l'événement
-                    client.on(filedata.name, (...args) =>
-                        filedata.listener(
-                            [...args],
-                            client
-                        )
-                    );
-                    console.log(`◉ ${filedata.name}`.blue);
-                }
-            )
-            .catch((err) => {
-                throw err;
-            });
+        let filedata = (await import(`../${EVENTS_FOLDER}/${file.name}`))
+            .default as PEvent<keyof Discord.ClientEvents>;
+
+        console.log(`◉ ${filedata.name}`.blue);
+        // Écouter l'événement
+        client.on(filedata.name, (...args) =>
+            filedata.listener([...args], client)
+        );
     });
 }
 
@@ -143,55 +136,42 @@ export async function loadCommands(): Promise<void> {
                 if (file.name.startsWith('__')) return;
 
                 // Lire le fichier
-                import(`../${COMMANDS_FOLDER}/${dir}/${file.name}`)
-                    .catch((err) => {
-                        throw err;
-                    })
-                    .then(
-                        ({
-                            default: filedata
-                        }: {
-                            default:
-                                | PCommandChatInput
-                                | PCommandMessageAction
-                                | PCommandUserAction;
-                        }) => {
-                            // Ajouter la commande dans la liste correspondante à son type
-                            switch (command_type) {
-                                case 'chat_input':
-                                    ChatInputs.set(
-                                        filedata.command.name,
-                                        filedata as PCommandChatInput
-                                    );
-                                    console.log(
-                                        `  ◈ ${filedata.command.name}`.blue
-                                    );
-                                    break;
-                                case 'message_action':
-                                    MessageActions.set(
-                                        filedata.command.name,
-                                        filedata as PCommandMessageAction
-                                    );
-                                    console.log(
-                                        `  ◈ ${filedata.command.name}`.blue
-                                    );
-                                    break;
-                                case 'user_action':
-                                    UserActions.set(
-                                        filedata.command.name,
-                                        filedata as PCommandUserAction
-                                    );
-                                    console.log(
-                                        `  ◈ ${filedata.command.name}`.blue
-                                    );
-                                    break;
-                                default:
-                                    console.log(
-                                        `  ◈ ${filedata.command.name}`.red
-                                    );
-                            }
-                        }
-                    );
+                let filedata = (
+                    await import(`../${COMMANDS_FOLDER}/${dir}/${file.name}`)
+                ).default as
+                    | PCommandChatInput
+                    | PCommandMessageAction
+                    | PCommandUserAction;
+
+                // Ajouter la commande dans la liste correspondante à son type
+                switch (command_type) {
+                    case 'chat_input':
+                        filedata.command.type =
+                            ApplicationCommandType.ChatInput;
+                        ChatInputs.set(
+                            filedata.command.name,
+                            filedata as PCommandChatInput
+                        );
+                        break;
+                    case 'message_action':
+                        filedata.command.type = ApplicationCommandType.Message;
+                        MessageActions.set(
+                            filedata.command.name,
+                            filedata as PCommandMessageAction
+                        );
+                        break;
+                    case 'user_action':
+                        filedata.command.type = ApplicationCommandType.User;
+                        UserActions.set(
+                            filedata.command.name,
+                            filedata as PCommandUserAction
+                        );
+                        break;
+                    default:
+                        console.log(`  ◈ ${filedata.command.name}`.red);
+                        return;
+                }
+                console.log(`  ◈ ${filedata.command.name}`.blue);
             });
         }
 
@@ -255,6 +235,10 @@ export async function loadComponents(): Promise<void> {
                     return;
                 } else if (!file.isFile()) return;
 
+                // Vérifier que le fichier est un fichier javascript
+                // (ex. ignorer les fichiers map)
+                if (!file.name.endsWith('.js')) return;
+
                 // Vérifier que le fichier existe dans le dossier source,
                 // sinon le supprimer du dossier build
                 if (
@@ -275,13 +259,13 @@ export async function loadComponents(): Promise<void> {
                 if (file.name.startsWith('__')) return;
 
                 // Lire le fichier
-                let filedata = (await import(
-                    `../${COMPONENTS_FOLDER}/${dir}/${file.name}`
-                )) as
+                let filedata = (
+                    await import(`../${COMPONENTS_FOLDER}/${dir}/${file.name}`)
+                ).default as
                     | PButtonInteraction
                     | PModalInteraction
                     | PAnySelectMenuInteraction;
-                console.log(`  ◈ ${filedata.component.id}`.blue);
+
                 // Ajouter le composant dans la liste correspondante à son type
                 switch (component_type) {
                     case 'button':
@@ -302,7 +286,11 @@ export async function loadComponents(): Promise<void> {
                             filedata as PAnySelectMenuInteraction
                         );
                         break;
+                    default:
+                        console.log(`  ◈ ${filedata.component.id}`.red);
+                        return;
                 }
+                console.log(`  ◈ ${filedata.component.id}`.blue);
             });
         }
 
@@ -319,92 +307,73 @@ export async function loadComponents(): Promise<void> {
 export const Autocompletes = new Map<string, PAutocomplete>();
 
 /** Charger les autocomplétitions */
-export function loadAutocompletes(): Promise<void> {
+export async function loadAutocompletes(): Promise<void> {
     console.log(' Loading autocompletes '.bgBlue.white);
-    // Renvoyer une instance Promise
-    return new Promise<void>(
-        async (/** Terminer sans erreur */ r, /** Renvoyer une erreur */ e) => {
-            // Vérifier que le dossier existe dans le dossier build
-            if (!fs.existsSync(`${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/`))
-                // Sinon terminer la fonction
-                return r();
+    // Vérifier que le dossier existe dans le dossier build
+    if (!fs.existsSync(`${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/`))
+        // Sinon terminer la fonction
+        return;
 
-            /** Charger un dossier de scripts */
-            async function loadDir(dir: string) {
-                // Renvoyer une instance Promise
-                return new Promise<void>((/** Terminer sans erreur */ r2) => {
-                    // Lire le contenu du dossier `dir`
-                    fs.readdir(
-                        `${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/${dir}`,
-                        {
-                            withFileTypes: true
-                        },
-                        async (err, files) => {
-                            // Renvoyer une erreur si c'est impossible de lister les fichiers
-                            if (err) return e(err);
+    /** Charger un dossier de scripts */
+    async function loadDir(dir: string) {
+        // Lire le contenu du dossier `dir`
+        fs.readdir(
+            `${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/${dir}`,
+            {
+                withFileTypes: true
+            },
+            async (err, files) => {
+                // Renvoyer une erreur si c'est impossible de lister les fichiers
+                if (err) throw err;
 
-                            // Parcourir chaque fichier
-                            await asyncForEach(files, async (file) => {
-                                // Si c'est un dossier, charger les fichiers dans ce dossier et terminer la fonction
-                                if (file.isDirectory()) {
-                                    await loadDir(`${dir}/${file.name}`);
-                                    return r2();
-                                } else if (!file.isFile()) return r2();
+                // Parcourir chaque fichier
+                await asyncForEach(files, async (file) => {
+                    // Si c'est un dossier, charger les fichiers dans ce dossier et terminer la fonction
+                    if (file.isDirectory()) {
+                        await loadDir(`${dir}/${file.name}`);
+                        return;
+                    } else if (!file.isFile()) return;
 
-                                // Vérifier que le fichier existe dans le dossier source,
-                                // sinon le supprimer du dossier build
-                                if (
-                                    !fs.existsSync(
-                                        `${SOURCE_DIR}/${AUTOCOMPLETE_FOLDER}/${dir}/${file.name.replace(
-                                            /\.js$/,
-                                            '.ts'
-                                        )}`
-                                    )
-                                ) {
-                                    fs.rmSync(
-                                        `${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/${dir}/${file.name}`
-                                    );
-                                    return r2();
-                                }
+                    // Vérifier que le fichier est un fichier javascript
+                    // (ex. ignorer les fichiers map)
+                    if (!file.name.endsWith('.js')) return;
 
-                                // Ignorer les fichiers dont le nom commence par "__"
-                                if (file.name.startsWith('__')) return;
+                    // Vérifier que le fichier existe dans le dossier source,
+                    // sinon le supprimer du dossier build
+                    if (
+                        !fs.existsSync(
+                            `${SOURCE_DIR}/${AUTOCOMPLETE_FOLDER}/${dir}/${file.name.replace(
+                                /\.js$/,
+                                '.ts'
+                            )}`
+                        )
+                    ) {
+                        fs.rmSync(
+                            `${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/${dir}/${file.name}`
+                        );
+                        return;
+                    }
 
-                                // Lire le fichier
-                                import(
-                                    `../${AUTOCOMPLETE_FOLDER}/${dir}/${file.name}`
-                                )
-                                    .then(
-                                        ({
-                                            default: filedata
-                                        }: {
-                                            default: PAutocomplete;
-                                        }) => {
-                                            console.log(
-                                                `◉ ${filedata.name}`.blue
-                                            );
-                                            // Ajouter le fichier et son contenu dans la liste des autocomplétitions
-                                            Autocompletes.set(
-                                                filedata.name,
-                                                filedata as PAutocomplete
-                                            );
-                                            r2();
-                                        }
-                                    )
-                                    .catch(e);
-                            });
-                        }
-                    );
+                    // Ignorer les fichiers dont le nom commence par "__"
+                    if (file.name.startsWith('__')) return;
+
+                    // Lire le fichier
+                    let filedata = (
+                        await import(
+                            `../${AUTOCOMPLETE_FOLDER}/${dir}/${file.name}`
+                        )
+                    ).default as PAutocomplete;
+
+                    console.log(`◉ ${filedata.name}`.blue);
+                    // Ajouter le fichier et son contenu dans la liste des autocomplétitions
+                    Autocompletes.set(filedata.name, filedata as PAutocomplete);
                 });
             }
+        );
+    }
 
-            // Charger le dossier build/commands
-            await loadDir('');
-
-            // Terminer la fonction sans erreurs
-            r();
-        }
-    );
+    // Charger le dossier build/commands
+    await loadDir('');
 }
 
 /** Démarrer le bot */

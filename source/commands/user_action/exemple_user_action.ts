@@ -18,7 +18,7 @@ export default {
                         }`
                     )
                     .setDescription(
-                        `A rejoint le server <t:${member.joinedTimestamp}:R>`
+                        `A rejoint le server <t:${member.joinedTimestamp.toString().slice(0, -3)}:R>`
                     )
             ]
         });

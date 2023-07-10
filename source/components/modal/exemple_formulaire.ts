@@ -5,6 +5,9 @@ export default {
         id: 'formulaire'
     },
     execute(interaction, client) {
-        interaction.reply(interaction.fields.getTextInputValue('input'));
+        interaction.reply({
+            content: interaction.fields.getTextInputValue('input'),
+            ephemeral: true
+        });
     }
 } as PModalInteraction;

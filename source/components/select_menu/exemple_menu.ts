@@ -6,7 +6,10 @@ export default {
         id: 'select_menu'
     },
     execute(interaction, client) {
-        interaction.reply(interaction.values.join(', '));
+        interaction.reply({
+            content: interaction.values.join(', '),
+            ephemeral: true
+        });
     }
 } as PSelectMenuInteraction<
     ComponentType.UserSelect,

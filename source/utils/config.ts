@@ -14,7 +14,7 @@ const config = {
               id: 'ID du bot public',
               publicKey: 'Clé publique du bot public',
               secret: 'Secret du bot public',
-              token: 'Token du bot public'
+              token: 'MTEyMjIyNTA0MjEyNjgwMjk2NA.G1djDY.tzbW_-0HD_TWvman4T2QgX8yklzX6fETuXfw2s'
           } as const),
     bot: {
         options: {

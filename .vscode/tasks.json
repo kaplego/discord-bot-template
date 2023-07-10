@@ -2,6 +2,10 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"icon": {
+				"color": "terminal.ansiGreen",
+				"id": "new-folder"
+			},
 			"type": "typescript",
 			"tsconfig": "tsconfig.json",
 			"problemMatcher": [

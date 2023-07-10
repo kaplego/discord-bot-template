@@ -16,9 +16,10 @@ export default {
         },
         options: [
             {
-                type: ApplicationCommandOptionType.User,
-                name: 'utilisateur',
-                description: 'Une option pour sélectionner un utilisateur.'
+                type: ApplicationCommandOptionType.String,
+                name: 'autocomplete',
+                description: 'Une option avec autocomplétition.',
+                autocomplete: true
             }
         ]
     },
