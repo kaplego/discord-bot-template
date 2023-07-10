@@ -27,7 +27,7 @@ const client = new Discord.Client(config.bot.options);
         throw throwError(err);
     });
 
-    // Charger les auto-complétitions
+    // Charger les autocomplétitions
     await loadAutocompletes().catch((err) => {
         throw throwError(err);
     });

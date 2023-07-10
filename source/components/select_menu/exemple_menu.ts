@@ -6,6 +6,7 @@ export default {
         id: 'select_menu'
     },
     execute(interaction, client) {
+        // Renvoyer les valeurs sélectionnées
         interaction.reply({
             content: interaction.values.join(', '),
             ephemeral: true

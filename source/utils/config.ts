@@ -1,5 +1,6 @@
 import type Discord from 'discord.js';
 
+/** Activer ou désactiver le mode de déboguage */
 const debugMode = false;
 
 const config = {

@@ -11,6 +11,7 @@ export default {
     },
     execute(interaction, client) {
         interaction.reply({
+            // Renvoyer un embed avec comme info si le message est épinglé
             embeds: [
                 new EmbedBuilder()
                     .setTitle(`Le message sélectionné`)
@@ -22,6 +23,7 @@ export default {
                         } épinglé`
                     )
             ],
+            // Avec un menu de sélection d'utilisateurs
             components: [
                 new ActionRowBuilder<UserSelectMenuBuilder>().setComponents(
                     new UserSelectMenuBuilder()

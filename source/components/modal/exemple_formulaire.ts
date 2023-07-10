@@ -5,6 +5,7 @@ export default {
         id: 'formulaire'
     },
     execute(interaction, client) {
+        // Renvoyer le contenu du champ de texte avec comme identifiant `input`
         interaction.reply({
             content: interaction.fields.getTextInputValue('input'),
             ephemeral: true
