@@ -1,11 +1,15 @@
-import { ActionRowBuilder, EmbedBuilder, UserSelectMenuBuilder } from 'discord.js';
+import {
+    ActionRowBuilder,
+    EmbedBuilder,
+    UserSelectMenuBuilder
+} from 'discord.js';
 import { PCommandMessageAction } from '../../types';
 
 export default {
     command: {
         name: 'Infos message'
     },
-    execute(interaction, client, checkPerms, checkChannelPerms) {
+    execute(interaction, client) {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
@@ -19,12 +23,11 @@ export default {
                     )
             ],
             components: [
-                new ActionRowBuilder<UserSelectMenuBuilder>()
-                    .setComponents(
-                        new UserSelectMenuBuilder()
-                            .setCustomId('select_menu')
-                            .setPlaceholder('Un menu de sélection')
-                    )
+                new ActionRowBuilder<UserSelectMenuBuilder>().setComponents(
+                    new UserSelectMenuBuilder()
+                        .setCustomId('select_menu')
+                        .setPlaceholder('Un menu de sélection')
+                )
             ]
         });
     }

@@ -7,7 +7,7 @@ export default {
         id: 'bouton',
         regex: /^bouton_[0-9]$/
     },
-    execute(interaction, client, checkPerms, checkChannelPerms) {
+    execute(interaction, client) {
         interaction.showModal(
             new ModalBuilder()
                 .setCustomId('formulaire')

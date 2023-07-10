@@ -1,11 +1,11 @@
 import { EmbedBuilder, GuildMember } from 'discord.js';
-import { PCommandMessageAction, PCommandUserAction } from '../../types';
+import { PCommandUserAction } from '../../types';
 
 export default {
     command: {
         name: 'Infos utilisateur'
     },
-    execute(interaction, client, checkPerms, checkChannelPerms) {
+    execute(interaction, client) {
         const member = interaction.targetMember as GuildMember;
 
         interaction.reply({

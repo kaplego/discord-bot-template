@@ -1,46 +1,16 @@
 import type Discord from 'discord.js';
-import {
-    checkPerms as CPerms,
-    checkChannelPerms as CChannelPerms,
-    DataTournois
-} from './utils/utils';
-import { Locale, Snowflake } from 'discord.js';
-
-export type MapRound = Map<
-    number,
-    {
-        choice1: ?{ label: string; value: string };
-        choice2: ?{ label: string; value: string };
-    }
->;
-export type Tournoi = {
-    type: keyof typeof DataTournois;
-    round: number;
-    rounds: MapRound;
-    data: {
-        value: string;
-        label: string;
-    }[];
-    winner: ?{
-        label: string;
-        value: string;
-    };
-    user: Snowflake;
-};
-export type MapTournois = Map<Snowflake, Tournoi>;
+import { Locale } from 'discord.js';
 
 export interface PEvent<K extends keyof Discord.ClientEvents> {
     name: K;
     once?: boolean;
     listener: (
         data: [...Discord.ClientEvents[K]],
-        client: Discord.Client,
-        checkPerms: typeof CPerms,
-        checkChannelPerms: typeof CChannelPerms
+        client: Discord.Client
     ) => Promise<void> | vpid;
 }
 
-interface PCommand<
+abstract interface PCommand<
     I extends
         | Discord.ChatInputCommandInteraction
         | Discord.MessageContextMenuCommandInteraction
@@ -52,9 +22,7 @@ interface PCommand<
         | Discord.UserApplicationCommandData;
     execute: (
         interaction: I,
-        client: Discord.Client,
-        checkPerms: typeof CPerms,
-        checkChannelPerms: typeof CChannelPerms
+        client: Discord.Client
     ) => Promise<unknown> | unknown;
 }
 
@@ -80,9 +48,7 @@ export interface PButtonInteraction {
     };
     execute: (
         interaction: Discord.ButtonInteraction,
-        client: Discord.Client,
-        checkPerms: typeof CPerms,
-        checkChannelPerms: typeof CChannelPerms
+        client: Discord.Client
     ) => Promise<unknown> | unknown;
 }
 
@@ -93,9 +59,7 @@ export interface PModalInteraction {
     };
     execute: (
         interaction: Discord.ModalSubmitInteraction,
-        client: Discord.Client,
-        checkPerms: typeof CPerms,
-        checkChannelPerms: typeof CChannelPerms
+        client: Discord.Client
     ) => Promise<unknown> | unknown;
 }
 
@@ -110,9 +74,7 @@ export interface PSelectMenuInteraction<
     };
     execute: (
         interaction: I,
-        client: Discord.Client,
-        checkPerms: typeof CPerms,
-        checkChannelPerms: typeof CChannelPerms
+        client: Discord.Client
     ) => Promise<unknown> | unknown;
 }
 
@@ -152,9 +114,7 @@ export interface PAutocomplete {
     name: string;
     execute: (
         interaction: Discord.AutocompleteInteraction,
-        client: Discord.Client,
-        checkPerms: typeof CPerms,
-        checkChannelPerms: typeof CChannelPerms
+        client: Discord.Client
     ) => Promise<unknown> | unknown;
 }
 
@@ -164,16 +124,6 @@ export type KCommandAutocomplete = {
     command_name: string;
     execute: (
         interaction: Discord.AutocompleteInteraction,
-        client: Discord.Client,
-        checkPerms: typeof cPerms,
-        checkChannelPerms: typeof cChannelPerms
+        client: Discord.Client
     ) => any | Promise<any>;
 };
-
-export type CustomCommandExecute = {
-    type: 'MESSAGE';
-    content?: string;
-    embeds?: APIEmbed[];
-};
-
-export type PeyBotSnowflake = Discord.Snowflake;

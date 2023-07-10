@@ -4,7 +4,6 @@ import {
     PAnySelectMenuInteraction,
     PAutocomplete,
     PButtonInteraction,
-    PCommand,
     PCommandChatInput,
     PCommandMessageAction,
     PCommandUserAction,
@@ -12,10 +11,7 @@ import {
     PModalInteraction
 } from '../types';
 import {
-    PromiseFn,
     asyncForEach,
-    checkChannelPerms,
-    checkPerms
 } from './utils';
 import config from './config';
 import {
@@ -69,9 +65,7 @@ export async function loadEvents(client: Discord.Client): Promise<void> {
                     client.on(filedata.name, (...args) =>
                         filedata.listener(
                             [...args],
-                            client,
-                            checkPerms,
-                            checkChannelPerms
+                            client
                         )
                     );
                     console.log(`◉ ${filedata.name}`.blue);

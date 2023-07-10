@@ -1,4 +1,4 @@
-import Discord, { ChannelType } from 'discord.js';
+import Discord from 'discord.js';
 import config from './utils/config';
 import { throwError } from './utils/utils';
 import './utils/suppressWarnings';

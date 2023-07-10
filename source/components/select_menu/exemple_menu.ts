@@ -1,19 +1,11 @@
-import {
-    ComponentType,
-    StringSelectMenuInteraction,
-    UserSelectMenuInteraction
-} from 'discord.js';
-import {
-    PButtonInteraction,
-    PModalInteraction,
-    PSelectMenuInteraction
-} from '../../types';
+import { ComponentType, UserSelectMenuInteraction } from 'discord.js';
+import { PSelectMenuInteraction } from '../../types';
 
 export default {
     component: {
         id: 'select_menu'
     },
-    execute(interaction, client, checkPerms, checkChannelPerms) {
+    execute(interaction, client) {
         interaction.reply(interaction.values.join(', '));
     }
 } as PSelectMenuInteraction<

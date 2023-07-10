@@ -12,7 +12,7 @@ import {
 
 export default {
     name: 'interactionCreate',
-    listener([interaction], client, checkPerms, checkChannelPerms) {
+    listener([interaction], client) {
         // Si l'interaction est une commande
         if (interaction.isCommand()) {
             // Si la commande est une commande de tchat
@@ -22,9 +22,7 @@ export default {
             )
                 ChatInputs.get(interaction.commandName).execute(
                     interaction,
-                    client,
-                    checkPerms,
-                    checkChannelPerms
+                    client
                 );
             // Si la commande est un menu contextuel de message
             else if (
@@ -33,9 +31,7 @@ export default {
             )
                 MessageActions.get(interaction.commandName).execute(
                     interaction,
-                    client,
-                    checkPerms,
-                    checkChannelPerms
+                    client
                 );
             // Si la commande est un menu contextuel d'utilisateur
             else if (
@@ -44,9 +40,7 @@ export default {
             )
                 UserActions.get(interaction.commandName).execute(
                     interaction,
-                    client,
-                    checkPerms,
-                    checkChannelPerms
+                    client
                 );
             else {
                 interaction.reply({
@@ -73,12 +67,7 @@ export default {
                         (button.component.regex instanceof RegExp &&
                             button.component.regex.test(interaction.customId))
                     ) {
-                        button.execute(
-                            interaction,
-                            client,
-                            checkPerms,
-                            checkChannelPerms
-                        );
+                        button.execute(interaction, client);
                         break;
                     }
                 }
@@ -97,12 +86,7 @@ export default {
                         (modal.component.regex instanceof RegExp &&
                             modal.component.regex.test(interaction.customId))
                     ) {
-                        modal.execute(
-                            interaction,
-                            client,
-                            checkPerms,
-                            checkChannelPerms
-                        );
+                        modal.execute(interaction, client);
                         break;
                     }
                 }
@@ -129,9 +113,7 @@ export default {
                     ) {
                         select_menu.execute(
                             interaction as AnySelectMenuInteraction,
-                            client,
-                            checkPerms,
-                            checkChannelPerms
+                            client
                         );
                         break;
                     }
@@ -142,9 +124,7 @@ export default {
         } else if (interaction.isAutocomplete()) {
             Autocompletes.get(interaction.commandName)?.execute(
                 interaction,
-                client,
-                checkPerms,
-                checkChannelPerms
+                client
             );
         }
     }
