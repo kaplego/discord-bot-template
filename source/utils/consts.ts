@@ -11,3 +11,6 @@ export const COMMANDS_FOLDER = `commands`;
 export const COMPONENTS_FOLDER = `components`;
 /** Dossier contenant les scripts d'autocomplétitions */
 export const AUTOCOMPLETE_FOLDER = `autocomplete`;
+
+/** ID du serveur privé */
+export const PRIVATE_SERVER_ID = `000000000000000000`;

@@ -7,7 +7,7 @@ export interface PEvent<K extends keyof Discord.ClientEvents> {
     listener: (
         data: [...Discord.ClientEvents[K]],
         client: Discord.Client
-    ) => Promise<void> | vpid;
+    ) => Promise<void> | void;
 }
 
 abstract interface PCommand<
