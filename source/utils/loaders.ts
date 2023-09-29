@@ -80,6 +80,16 @@ export const UserActions = new Map<string, PCommandUserAction>();
 /** Liste de toutes les commandes */
 export const AllCommands = [] as ApplicationCommand[];
 
+/** Liste des commandes privées de type ChatInput */
+export const PrivateChatInputs = new Map<string, PCommandChatInput>();
+/** Liste des commandes privées de type MessageAction */
+export const PrivateMessageActions = new Map<string, PCommandMessageAction>();
+/** Liste des commandes privées de type UserAction */
+export const PrivateUserActions = new Map<string, PCommandUserAction>();
+
+/** Liste des commandes privées */
+export const PrivateAllCommands = [] as ApplicationCommand[];
+
 export async function loadCommands(): Promise<void> {
     console.log(' Loading commands '.bgBlue.white);
     // Parcourir chaque type de commande
@@ -92,7 +102,7 @@ export async function loadCommands(): Promise<void> {
         if (!fs.existsSync(`${BUILD_DIR}/${COMMANDS_FOLDER}/${command_type}`))
             continue;
 
-        console.log(`▽ ${command_type}`.cyan);
+        console.log(`▽ ${command_type}`.green);
 
         /** Charger un dossier de scripts */
         async function loadDir(dir: string) {
@@ -148,30 +158,58 @@ export async function loadCommands(): Promise<void> {
                     case 'chat_input':
                         filedata.command.type =
                             ApplicationCommandType.ChatInput;
-                        ChatInputs.set(
-                            filedata.command.name,
-                            filedata as PCommandChatInput
-                        );
+
+                        if (file.name.startsWith('$'))
+                            PrivateChatInputs.set(
+                                filedata.command.name,
+                                filedata as PCommandChatInput
+                            );
+                        else
+                            ChatInputs.set(
+                                filedata.command.name,
+                                filedata as PCommandChatInput
+                            );
+
                         break;
                     case 'message_action':
                         filedata.command.type = ApplicationCommandType.Message;
-                        MessageActions.set(
-                            filedata.command.name,
-                            filedata as PCommandMessageAction
-                        );
+
+                        if (file.name.startsWith('$'))
+                            PrivateMessageActions.set(
+                                filedata.command.name,
+                                filedata as PCommandMessageAction
+                            );
+                        else
+                            MessageActions.set(
+                                filedata.command.name,
+                                filedata as PCommandMessageAction
+                            );
+
                         break;
                     case 'user_action':
                         filedata.command.type = ApplicationCommandType.User;
-                        UserActions.set(
-                            filedata.command.name,
-                            filedata as PCommandUserAction
-                        );
+
+                        if (file.name.startsWith('$'))
+                            PrivateUserActions.set(
+                                filedata.command.name,
+                                filedata as PCommandUserAction
+                            );
+                        else
+                            UserActions.set(
+                                filedata.command.name,
+                                filedata as PCommandUserAction
+                            );
+
                         break;
                     default:
                         console.log(`  ◈ ${filedata.command.name}`.red);
                         return;
                 }
-                console.log(`  ◈ ${filedata.command.name}`.blue);
+                console.log(
+                    `  ◈ ${filedata.command.name}`[
+                        file.name.startsWith('$') ? 'gray' : 'blue'
+                    ]
+                );
             });
         }
 
@@ -186,6 +224,15 @@ export async function loadCommands(): Promise<void> {
         ...UserActions.values()
     ].forEach((command) => {
         AllCommands.push(command.command as any);
+    });
+
+    // Ajouter toutes les commandes privées à la liste `PrivateAllCommands`
+    [
+        ...PrivateChatInputs.values(),
+        ...PrivateMessageActions.values(),
+        ...PrivateUserActions.values()
+    ].forEach((command) => {
+        PrivateAllCommands.push(command.command as any);
     });
 }
 
@@ -215,7 +262,7 @@ export async function loadComponents(): Promise<void> {
             )
         )
             continue;
-        console.log(`▽ ${component_type}`.cyan);
+        console.log(`▽ ${component_type}`.green);
 
         /** Charger un dossier de scripts */
         async function loadDir(dir: string) {

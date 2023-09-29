@@ -10,7 +10,7 @@
     "license": "ISC",
     "dependencies": {
         "colors": "^1.4.0",
-        "discord.js": "^14.11.0",
+        "discord.js": "^14.13.0",
         "ts": "^0.2.2"
     }
 }
