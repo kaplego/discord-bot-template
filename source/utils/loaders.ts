@@ -14,18 +14,19 @@ import {
     PModalInteraction
 } from '../types';
 import { asyncForEach } from './utils';
-import config from './config';
-import {
-    AUTOCOMPLETE_FOLDER,
-    BUILD_DIR,
-    COMMANDS_FOLDER,
-    COMPONENTS_FOLDER,
-    EVENTS_FOLDER,
-    SOURCE_DIR
-} from './consts';
+import { logging } from '..';
+
+
+const BUILD_DIR = process.env.BUILD_DIR || 'out';
+const SOURCE_DIR = process.env.SOURCE_DIR || 'source';
+
+const EVENTS_FOLDER = process.env.EVENTS_FOLDER || 'events';
+const COMMANDS_FOLDER = process.env.COMMANDS_FOLDER || 'commands';
+const COMPONENTS_FOLDER = process.env.COMPONENTS_FOLDER || 'components';
+const AUTOCOMPLETE_FOLDER = process.env.AUTOCOMPLETE_FOLDER || 'autocomplete';
 
 export async function loadEvents(client: Discord.Client): Promise<void> {
-    console.log(' Loading events '.bgBlue.white);
+    logging.log(' Loading events '.bgBlue.white);
     // Récupérer les fichiers du dossier "event"
     let files = fs.readdirSync(`${BUILD_DIR}/${EVENTS_FOLDER}`, {
         withFileTypes: true
@@ -62,7 +63,7 @@ export async function loadEvents(client: Discord.Client): Promise<void> {
         let filedata = (await import(`../${EVENTS_FOLDER}/${file.name}`))
             .default as PEvent<keyof Discord.ClientEvents>;
 
-        console.log(`◉ ${filedata.name}`.blue);
+        logging.log(`◉ ${filedata.name}`.blue);
         // Écouter l'événement
         client.on(filedata.name, (...args) =>
             filedata.listener([...args], client)
@@ -91,7 +92,7 @@ export const PrivateUserActions = new Map<string, PCommandUserAction>();
 export const PrivateAllCommands = [] as ApplicationCommand[];
 
 export async function loadCommands(): Promise<void> {
-    console.log(' Loading commands '.bgBlue.white);
+    logging.log(' Loading commands '.bgBlue.white);
     // Parcourir chaque type de commande
     for (const command_type of [
         'chat_input',
@@ -102,7 +103,7 @@ export async function loadCommands(): Promise<void> {
         if (!fs.existsSync(`${BUILD_DIR}/${COMMANDS_FOLDER}/${command_type}`))
             continue;
 
-        console.log(`▽ ${command_type}`.green);
+        logging.log(`▽ ${command_type}`.green);
 
         /** Charger un dossier de scripts */
         async function loadDir(dir: string) {
@@ -202,10 +203,10 @@ export async function loadCommands(): Promise<void> {
 
                         break;
                     default:
-                        console.log(`  ◈ ${filedata.command.name}`.red);
+                        logging.log(`  ◈ ${filedata.command.name}`.red);
                         return;
                 }
-                console.log(
+                logging.log(
                     `  ◈ ${filedata.command.name}`[
                         file.name.startsWith('$') ? 'gray' : 'blue'
                     ]
@@ -252,7 +253,7 @@ export const AllComponents = [] as (
 
 /** Charger les composants de message */
 export async function loadComponents(): Promise<void> {
-    console.log(' Loading components '.bgBlue.white);
+    logging.log(' Loading components '.bgBlue.white);
     // Parcourir chaque type de composant
     for (const component_type of ['button', 'modal', 'select_menu'] as const) {
         // Passer au type suivant si `component_type` n'existe pas
@@ -262,7 +263,7 @@ export async function loadComponents(): Promise<void> {
             )
         )
             continue;
-        console.log(`▽ ${component_type}`.green);
+        logging.log(`▽ ${component_type}`.green);
 
         /** Charger un dossier de scripts */
         async function loadDir(dir: string) {
@@ -334,10 +335,10 @@ export async function loadComponents(): Promise<void> {
                         );
                         break;
                     default:
-                        console.log(`  ◈ ${filedata.component.id}`.red);
+                        logging.log(`  ◈ ${filedata.component.id}`.red);
                         return;
                 }
-                console.log(`  ◈ ${filedata.component.id}`.blue);
+                logging.log(`  ◈ ${filedata.component.id}`.blue);
             });
         }
 
@@ -355,7 +356,7 @@ export const Autocompletes = new Map<string, PAutocomplete>();
 
 /** Charger les autocomplétitions */
 export async function loadAutocompletes(): Promise<void> {
-    console.log(' Loading autocompletes '.bgBlue.white);
+    logging.log(' Loading autocompletes '.bgBlue.white);
     // Vérifier que le dossier existe dans le dossier build
     if (!fs.existsSync(`${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/`))
         // Sinon terminer la fonction
@@ -411,7 +412,7 @@ export async function loadAutocompletes(): Promise<void> {
                         )
                     ).default as PAutocomplete;
 
-                    console.log(`◉ ${filedata.name}`.blue);
+                    logging.log(`◉ ${filedata.name}`.blue);
                     // Ajouter le fichier et son contenu dans la liste des autocomplétitions
                     Autocompletes.set(filedata.name, filedata as PAutocomplete);
                 });
@@ -425,5 +426,5 @@ export async function loadAutocompletes(): Promise<void> {
 
 /** Démarrer le bot */
 export async function init(client: Discord.Client) {
-    client.login(config.application.token);
+    client.login(process.env.BOT_TOKEN);
 }

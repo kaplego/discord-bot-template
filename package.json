@@ -4,13 +4,16 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "node build/."
+        "build": "tsc",
+        "start": "node out/."
     },
     "author": "",
-    "license": "ISC",
+    "license": "GNU GPLv3",
     "dependencies": {
         "colors": "^1.4.0",
         "discord.js": "^14.13.0",
-        "ts": "^0.2.2"
+        "dotenv": "^16.3.1",
+        "fs": "^0.0.1-security",
+        "typescript": "^5.1.6"
     }
 }

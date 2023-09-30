@@ -6,6 +6,9 @@ import {
     ChatInputs,
     MessageActions,
     Modals,
+    PrivateChatInputs,
+    PrivateMessageActions,
+    PrivateUserActions,
     SelectMenus,
     UserActions
 } from '../utils/loaders';
@@ -42,9 +45,37 @@ export default {
                     interaction,
                     client
                 );
+            // Si la commande est une commande de tchat PRIVÉE
+            else if (
+                interaction.isChatInputCommand() &&
+                PrivateChatInputs.has(interaction.commandName)
+            )
+                PrivateChatInputs.get(interaction.commandName).execute(
+                    interaction,
+                    client
+                );
+            // Si la commande est un menu contextuel de message PRIVÉE
+            else if (
+                interaction.isMessageContextMenuCommand() &&
+                PrivateMessageActions.get(interaction.commandName)
+            )
+                PrivateMessageActions.get(interaction.commandName).execute(
+                    interaction,
+                    client
+                );
+            // Si la commande est un menu contextuel d'utilisateur PRIVÉE
+            else if (
+                interaction.isUserContextMenuCommand() &&
+                PrivateUserActions.get(interaction.commandName)
+            )
+                PrivateUserActions.get(interaction.commandName).execute(
+                    interaction,
+                    client
+                );
             else {
                 interaction.reply({
-                    content: 'Unknown interaction.'
+                    content: 'Unknown interaction.',
+                    ephemeral: true
                 });
             }
 

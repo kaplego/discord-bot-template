@@ -1,0 +1,37 @@
+{
+    "commands": {
+        "slash": {
+            "exemple": {
+                "name": "exemple",
+                "description": "Une commande slash classique.",
+                "options": {
+                    "autocomplete": {
+                        "name": "autocompletition",
+                        "description": "Une option avec autocomplétion."
+                    }
+                }
+            },
+            "private": {
+                "name": "privee",
+                "description": "Une commande slash privée.",
+                "commandData": {
+                    "reply": "Une commande privée et traduite en français et en anglais (GB), selon la langue de l'utilisateur."
+                },
+                "options": {
+                    "option": {
+                        "name": "option",
+                        "description": "Une option.",
+                        "choices": {
+                            "choice_1": {
+                                "name": "choix_1"
+                            },
+                            "choice_2": {
+                                "name": "choix_2"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

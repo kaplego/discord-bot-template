@@ -6,19 +6,26 @@ import {
     EmbedBuilder
 } from 'discord.js';
 import { PCommandChatInput } from '../../types';
+import { locales } from '../..';
+
+const commandLocales = locales.command('slash', 'exemple');
 
 export default {
     command: {
         name: 'exemple',
         description: 'Une commande slash classique.',
-        descriptionLocalizations: {
-            'en-GB': 'A classic slash command.'
-        },
+        descriptionLocalizations: commandLocales.get('description'),
         options: [
             {
                 type: ApplicationCommandOptionType.String,
                 name: 'autocomplete',
+                nameLocalizations: commandLocales
+                    .option('autocomplete')
+                    .get('name'),
                 description: 'Une option avec autocomplétition.',
+                descriptionLocalizations: commandLocales
+                    .option('autocomplete')
+                    .get('description'),
                 autocomplete: true
             }
         ]

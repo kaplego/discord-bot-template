@@ -1,0 +1,37 @@
+{
+    "commands": {
+        "slash": {
+            "exemple": {
+                "name": "example",
+                "description": "A classic slash command.",
+                "options": {
+                    "autocomplete": {
+                        "name": "autocomplete",
+                        "description": "An option with autocomplete."
+                    }
+                }
+            },
+            "private": {
+                "name": "private",
+                "description": "A private slash command.",
+                "commandData": {
+                    "reply": "A private slash command localized in french and english (GB) according to the user's language."
+                },
+                "options": {
+                    "option": {
+                        "name": "option",
+                        "description": "An option.",
+                        "choices": {
+                            "choice_1": {
+                                "name": "choice_1"
+                            },
+                            "choice_2": {
+                                "name": "choice_2"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

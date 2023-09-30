@@ -1,23 +1,17 @@
 {
     "configurations": [
         {
-            "name": "Launch via NPM",
-            "request": "launch",
-            "runtimeExecutable": "npm",
-            "args": [
-                "start"
-            ],
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
             "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/source/index.ts",
             "preLaunchTask": "tsc: build - tsconfig.json",
-            "console": "internalConsole",
-            "resolveSourceMapLocations": [
-                "${workspaceFolder}/",
-                "!/node_modules/**"
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js"
             ],
-            "sourceMaps": true
+            "args": [
+                "--tsconfig ${workspaceFolder}/tsconfig.json"
+            ]
         }
     ]
 }

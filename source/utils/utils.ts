@@ -1,10 +1,14 @@
 import colors from 'colors';
+import { logging } from '..';
 
 colors.enable();
 
 /** Renvoyer une erreur et terminer l'exécution du code */
-export function throwError(error: Error) {
-    console.error(' ==== ERROR ==== '.bgRed.white);
+export function throwError(error: Error, t: boolean = false) {
+    logging.error(' ==== ERROR ==== '.bgRed.white);
+
+    if (t)
+        throw error;
     return error;
 }
 
