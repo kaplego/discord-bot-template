@@ -1,6 +1,6 @@
+import type { Bot } from '../../types';
 import { ApplicationCommandOptionType } from 'discord.js';
 import { locales } from '../..';
-import { PCommandChatInput } from '../../types';
 
 const commandLocales = locales.command('slash', 'private');
 
@@ -58,4 +58,4 @@ export default {
         });
 
     }
-} as PCommandChatInput;
+} as Bot.SlashCommand;

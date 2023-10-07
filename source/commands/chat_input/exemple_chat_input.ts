@@ -1,3 +1,4 @@
+import type { Bot } from '../../types';
 import {
     ActionRowBuilder,
     ApplicationCommandOptionType,
@@ -5,7 +6,6 @@ import {
     ButtonStyle,
     EmbedBuilder
 } from 'discord.js';
-import { PCommandChatInput } from '../../types';
 import { locales } from '../..';
 
 const commandLocales = locales.command('slash', 'exemple');
@@ -54,4 +54,4 @@ export default {
             ]
         });
     }
-} as PCommandChatInput;
+} as Bot.SlashCommand;

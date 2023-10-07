@@ -1,4 +1,4 @@
-import { PModalInteraction } from '../../types';
+import type { Bot } from '../../types';
 
 export default {
     component: {
@@ -11,4 +11,4 @@ export default {
             ephemeral: true
         });
     }
-} as PModalInteraction;
+} as Bot.Modal;

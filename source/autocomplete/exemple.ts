@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionChoiceData } from 'discord.js';
-import { PAutocomplete } from '../types';
+import type { Bot } from '../types';
+import type { ApplicationCommandOptionChoiceData } from 'discord.js';
 
 export default {
     name: 'exemple',
@@ -29,4 +29,4 @@ export default {
 
         interaction.respond(options);
     }
-} as PAutocomplete;
+} as Bot.Autocomplete;

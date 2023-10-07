@@ -1,32 +1,32 @@
+import type { Bot } from '../types';
 import fs from 'fs';
 import Discord, {
     ApplicationCommand,
     ApplicationCommandType
 } from 'discord.js';
-import {
-    PAnySelectMenuInteraction,
-    PAutocomplete,
-    PButtonInteraction,
-    PCommandChatInput,
-    PCommandMessageAction,
-    PCommandUserAction,
-    PEvent,
-    PModalInteraction
-} from '../types';
 import { asyncForEach } from './utils';
 import { logging } from '..';
 
-
+/** Le chemin vers le dossier du code complié, à partir de la racine du projet. */
 const BUILD_DIR = process.env.BUILD_DIR || 'out';
+/** Le chemin vers le dossier du code source, à partir de la racine du projet. */
 const SOURCE_DIR = process.env.SOURCE_DIR || 'source';
 
+/** Le chemin vers le dossier des événements, à partir du dossier du code source. */
 const EVENTS_FOLDER = process.env.EVENTS_FOLDER || 'events';
+/** Le chemin vers le dossier des commandes, à partir du dossier du code source. */
 const COMMANDS_FOLDER = process.env.COMMANDS_FOLDER || 'commands';
+/** Le chemin vers le dossier des composants, à partir du dossier du code source. */
 const COMPONENTS_FOLDER = process.env.COMPONENTS_FOLDER || 'components';
+/** Le chemin vers le dossier des autocomplétions, à partir du dossier du code source. */
 const AUTOCOMPLETE_FOLDER = process.env.AUTOCOMPLETE_FOLDER || 'autocomplete';
 
+/**
+ * Charger les événements du bot.
+ * @param client Le client Discord.js.
+ */
 export async function loadEvents(client: Discord.Client): Promise<void> {
-    logging.log(' Loading events '.bgBlue.white);
+    logging.info(' Loading events '.bgBlue.white);
     // Récupérer les fichiers du dossier "event"
     let files = fs.readdirSync(`${BUILD_DIR}/${EVENTS_FOLDER}`, {
         withFileTypes: true
@@ -61,38 +61,47 @@ export async function loadEvents(client: Discord.Client): Promise<void> {
 
         // Lire le fichier
         let filedata = (await import(`../${EVENTS_FOLDER}/${file.name}`))
-            .default as PEvent<keyof Discord.ClientEvents>;
+            .default as Bot.Event<keyof Discord.ClientEvents>;
 
         logging.log(`◉ ${filedata.name}`.blue);
         // Écouter l'événement
-        client.on(filedata.name, (...args) =>
-            filedata.listener([...args], client)
-        );
+        client.on(filedata.name, (...args) => {
+            logging.log(
+                `[Event]       ${filedata.name.replace(/^./, (c) =>
+                    c.toUpperCase()
+                )}`,
+                ...args
+            );
+            filedata.listener([...args], client);
+        });
     });
 }
 
 /** Liste des commandes de type ChatInput */
-export const ChatInputs = new Map<string, PCommandChatInput>();
+export const ChatInputs = new Map<string, Bot.SlashCommand>();
 /** Liste des commandes de type MessageAction */
-export const MessageActions = new Map<string, PCommandMessageAction>();
+export const MessageActions = new Map<string, Bot.MessageCommand>();
 /** Liste des commandes de type UserAction */
-export const UserActions = new Map<string, PCommandUserAction>();
+export const UserActions = new Map<string, Bot.UserCommand>();
 
 /** Liste de toutes les commandes */
 export const AllCommands = [] as ApplicationCommand[];
 
 /** Liste des commandes privées de type ChatInput */
-export const PrivateChatInputs = new Map<string, PCommandChatInput>();
+export const PrivateChatInputs = new Map<string, Bot.SlashCommand>();
 /** Liste des commandes privées de type MessageAction */
-export const PrivateMessageActions = new Map<string, PCommandMessageAction>();
+export const PrivateMessageActions = new Map<string, Bot.MessageCommand>();
 /** Liste des commandes privées de type UserAction */
-export const PrivateUserActions = new Map<string, PCommandUserAction>();
+export const PrivateUserActions = new Map<string, Bot.UserCommand>();
 
 /** Liste des commandes privées */
 export const PrivateAllCommands = [] as ApplicationCommand[];
 
+/**
+ * Charger les commandes du bot.
+ */
 export async function loadCommands(): Promise<void> {
-    logging.log(' Loading commands '.bgBlue.white);
+    logging.info(' Loading commands '.bgBlue.white);
     // Parcourir chaque type de commande
     for (const command_type of [
         'chat_input',
@@ -150,9 +159,9 @@ export async function loadCommands(): Promise<void> {
                 let filedata = (
                     await import(`../${COMMANDS_FOLDER}/${dir}/${file.name}`)
                 ).default as
-                    | PCommandChatInput
-                    | PCommandMessageAction
-                    | PCommandUserAction;
+                    | Bot.SlashCommand
+                    | Bot.MessageCommand
+                    | Bot.UserCommand;
 
                 // Ajouter la commande dans la liste correspondante à son type
                 switch (command_type) {
@@ -163,12 +172,12 @@ export async function loadCommands(): Promise<void> {
                         if (file.name.startsWith('$'))
                             PrivateChatInputs.set(
                                 filedata.command.name,
-                                filedata as PCommandChatInput
+                                filedata as Bot.SlashCommand
                             );
                         else
                             ChatInputs.set(
                                 filedata.command.name,
-                                filedata as PCommandChatInput
+                                filedata as Bot.SlashCommand
                             );
 
                         break;
@@ -178,12 +187,12 @@ export async function loadCommands(): Promise<void> {
                         if (file.name.startsWith('$'))
                             PrivateMessageActions.set(
                                 filedata.command.name,
-                                filedata as PCommandMessageAction
+                                filedata as Bot.MessageCommand
                             );
                         else
                             MessageActions.set(
                                 filedata.command.name,
-                                filedata as PCommandMessageAction
+                                filedata as Bot.MessageCommand
                             );
 
                         break;
@@ -193,12 +202,12 @@ export async function loadCommands(): Promise<void> {
                         if (file.name.startsWith('$'))
                             PrivateUserActions.set(
                                 filedata.command.name,
-                                filedata as PCommandUserAction
+                                filedata as Bot.UserCommand
                             );
                         else
                             UserActions.set(
                                 filedata.command.name,
-                                filedata as PCommandUserAction
+                                filedata as Bot.UserCommand
                             );
 
                         break;
@@ -238,22 +247,24 @@ export async function loadCommands(): Promise<void> {
 }
 
 /** Liste les composants de type Button */
-export const Buttons = new Map<string, PButtonInteraction>();
+export const Buttons = new Map<string, Bot.Button>();
 /** Liste des composants de type Modal */
-export const Modals = new Map<string, PModalInteraction>();
+export const Modals = new Map<string, Bot.Modal>();
 /** Liste des composants de type SelectMenu */
-export const SelectMenus = new Map<string, PAnySelectMenuInteraction>();
+export const SelectMenus = new Map<string, Bot.AnySelectMenu>();
 
 /** Liste de tous les composants */
 export const AllComponents = [] as (
-    | PButtonInteraction
-    | PModalInteraction
-    | PAnySelectMenuInteraction
+    | Bot.Button
+    | Bot.Modal
+    | Bot.AnySelectMenu
 )['component'][];
 
-/** Charger les composants de message */
+/**
+ * Charger les composants de message
+ */
 export async function loadComponents(): Promise<void> {
-    logging.log(' Loading components '.bgBlue.white);
+    logging.info(' Loading components '.bgBlue.white);
     // Parcourir chaque type de composant
     for (const component_type of ['button', 'modal', 'select_menu'] as const) {
         // Passer au type suivant si `component_type` n'existe pas
@@ -309,29 +320,26 @@ export async function loadComponents(): Promise<void> {
                 // Lire le fichier
                 let filedata = (
                     await import(`../${COMPONENTS_FOLDER}/${dir}/${file.name}`)
-                ).default as
-                    | PButtonInteraction
-                    | PModalInteraction
-                    | PAnySelectMenuInteraction;
+                ).default as Bot.Button | Bot.Modal | Bot.AnySelectMenu;
 
                 // Ajouter le composant dans la liste correspondante à son type
                 switch (component_type) {
                     case 'button':
                         Buttons.set(
                             filedata.component.id,
-                            filedata as PButtonInteraction
+                            filedata as Bot.Button
                         );
                         break;
                     case 'modal':
                         Modals.set(
                             filedata.component.id,
-                            filedata as PModalInteraction
+                            filedata as Bot.Modal
                         );
                         break;
                     case 'select_menu':
                         SelectMenus.set(
                             filedata.component.id,
-                            filedata as PAnySelectMenuInteraction
+                            filedata as Bot.AnySelectMenu
                         );
                         break;
                     default:
@@ -352,11 +360,13 @@ export async function loadComponents(): Promise<void> {
     );
 }
 
-export const Autocompletes = new Map<string, PAutocomplete>();
+export const Autocompletes = new Map<string, Bot.Autocomplete>();
 
-/** Charger les autocomplétitions */
+/**
+ * Charger les autocomplétions de commande.
+ */
 export async function loadAutocompletes(): Promise<void> {
-    logging.log(' Loading autocompletes '.bgBlue.white);
+    logging.info(' Loading autocompletes '.bgBlue.white);
     // Vérifier que le dossier existe dans le dossier build
     if (!fs.existsSync(`${BUILD_DIR}/${AUTOCOMPLETE_FOLDER}/`))
         // Sinon terminer la fonction
@@ -410,11 +420,14 @@ export async function loadAutocompletes(): Promise<void> {
                         await import(
                             `../${AUTOCOMPLETE_FOLDER}/${dir}/${file.name}`
                         )
-                    ).default as PAutocomplete;
+                    ).default as Bot.Autocomplete;
 
                     logging.log(`◉ ${filedata.name}`.blue);
                     // Ajouter le fichier et son contenu dans la liste des autocomplétitions
-                    Autocompletes.set(filedata.name, filedata as PAutocomplete);
+                    Autocompletes.set(
+                        filedata.name,
+                        filedata as Bot.Autocomplete
+                    );
                 });
             }
         );
@@ -424,7 +437,9 @@ export async function loadAutocompletes(): Promise<void> {
     await loadDir('');
 }
 
-/** Démarrer le bot */
+/**
+ * Démmarer le bot.
+ */
 export async function init(client: Discord.Client) {
     client.login(process.env.BOT_TOKEN);
 }

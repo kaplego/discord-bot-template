@@ -1,5 +1,5 @@
+import type { Bot } from '../../types';
 import { ModalBuilder, TextInputStyle } from 'discord.js';
-import { PButtonInteraction } from '../../types';
 import { ActionRowBuilder, TextInputBuilder } from '@discordjs/builders';
 
 export default {
@@ -37,4 +37,4 @@ export default {
                 )
         );
     }
-} as PButtonInteraction;
+} as Bot.Button;

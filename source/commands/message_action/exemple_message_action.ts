@@ -1,9 +1,9 @@
+import type { Bot } from '../../types';
 import {
     ActionRowBuilder,
     EmbedBuilder,
     UserSelectMenuBuilder
 } from 'discord.js';
-import { PCommandMessageAction } from '../../types';
 
 export default {
     command: {
@@ -33,4 +33,4 @@ export default {
             ]
         });
     }
-} as PCommandMessageAction;
+} as Bot.MessageCommand;

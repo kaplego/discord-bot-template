@@ -1,5 +1,5 @@
+import type { Bot } from '../../types';
 import { EmbedBuilder, GuildMember } from 'discord.js';
-import { PCommandUserAction } from '../../types';
 
 export default {
     command: {
@@ -28,4 +28,4 @@ export default {
             ]
         });
     }
-} as PCommandUserAction;
+} as Bot.UserCommand;
