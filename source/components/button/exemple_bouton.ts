@@ -1,5 +1,4 @@
-import { ModalBuilder, TextInputStyle } from 'discord.js';
-import { PButtonInteraction } from '../../types';
+import { Discord, type Bot } from '../../types';
 import { ActionRowBuilder, TextInputBuilder } from '@discordjs/builders';
 
 export default {
@@ -10,7 +9,7 @@ export default {
     execute(interaction, client) {
         // Afficher un formulaire
         interaction.showModal(
-            new ModalBuilder()
+            new Discord.ModalBuilder()
                 // Définir l'identifiant unique
                 .setCustomId('formulaire')
                 // Définir le titre affiché
@@ -24,7 +23,7 @@ export default {
                             // Définir l'identifiant unique
                             .setCustomId('input')
                             // Définir le type de champ (court ou paragraphe)
-                            .setStyle(TextInputStyle.Short)
+                            .setStyle(Discord.TextInputStyle.Short)
                             // Définir le label affiché
                             .setLabel('Un champ de texte')
                             // Définir le placeholder affiché quand le champ est vide
@@ -37,4 +36,4 @@ export default {
                 )
         );
     }
-} as PButtonInteraction;
+} as Bot.Button;

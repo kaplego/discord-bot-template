@@ -1,6 +1,5 @@
-import { ApplicationCommandOptionType } from 'discord.js';
+import { Discord, type Bot } from '../../types';
 import { locales } from '../..';
-import { PCommandChatInput } from '../../types';
 
 const commandLocales = locales.command('slash', 'private');
 
@@ -12,7 +11,7 @@ export default {
         descriptionLocalizations: commandLocales.get('description'),
         options: [
             {
-                type: ApplicationCommandOptionType.String,
+                type: Discord.ApplicationCommandOptionType.String,
                 name: commandLocales.option('option').getOne('name'),
                 nameLocalizations: commandLocales.option('option').get('name'),
                 description: commandLocales
@@ -50,12 +49,13 @@ export default {
         ]
     },
     async execute(interaction, client) {
-
         // Répondre à l'interaction avec un message traduit dans la langue de l'utilisateur (si disponible, sinon la langue par défaut)
         interaction.reply({
-            content: commandLocales.getOne('commandData.reply', interaction.locale),
+            content: commandLocales.getOne(
+                'commandData.reply',
+                interaction.locale
+            ),
             ephemeral: true
         });
-
     }
-} as PCommandChatInput;
+} as Bot.SlashCommand;

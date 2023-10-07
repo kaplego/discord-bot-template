@@ -1,5 +1,4 @@
-import { ComponentType, UserSelectMenuInteraction } from 'discord.js';
-import { PSelectMenuInteraction } from '../../types';
+import type { Bot } from '../../types';
 
 export default {
     component: {
@@ -12,7 +11,4 @@ export default {
             ephemeral: true
         });
     }
-} as PSelectMenuInteraction<
-    ComponentType.UserSelect,
-    UserSelectMenuInteraction
->;
+} as Bot.StringSelectMenu;

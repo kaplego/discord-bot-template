@@ -29,13 +29,14 @@ Ce modèle propose des fonctionnalités préconfigurées pour simplifier la cré
 
 (automatiquement installées lors de l'utilisation de `npm install`)
 
-| Dépendance                                             | Version           | Description                                    |
-| ------------------------------------------------------ | ----------------- | ---------------------------------------------- |
-| [typescript](https://www.npmjs.com/package/typescript) | v5.1.6            | Pour compiler le code TypeScript en JavaScript |
-| [fs](https://www.npmjs.com/package/fs)                 | v0.0.1-security   | Pour gérer les fichiers                        |
-| [discord.js](https://www.npmjs.com/package/discord.js) | v14.13.0          | Pour intéragir avec l'API Discord              |
-| [dotenv](https://www.npmjs.com/package/dotenv)         | v16.3.1           | Pour charger les variables  d'environnement    |
-| [colors](https://www.npmjs.com/package/colors)         | v1.4.0            | Pour ajouter des couleurs aux logs             |
+| Dépendance                                                 | Version           | Description                                    |
+| ---------------------------------------------------------- | ----------------- | ---------------------------------------------- |
+| [typescript](https://www.npmjs.com/package/typescript)     | v5.1.6            | Pour compiler le code TypeScript en JavaScript |
+| [discord.js](https://www.npmjs.com/package/discord.js)     | v14.13.0          | Pour intéragir avec l'API Discord              |
+| [dotenv](https://www.npmjs.com/package/dotenv)             | v16.3.1           | Pour charger les variables  d'environnement    |
+| [colors](https://www.npmjs.com/package/colors)             | v1.4.0            | Pour ajouter des couleurs aux logs             |
+| [moment](https://www.npmjs.com/package/moment)             | v2.29.4           | Pour afficher les heures des logs              |
+| [ansi-to-html](https://www.npmjs.com/package/ansi-to-html) | v0.7.2            | Pour convertir les logs en HTML                |
 
 ### Étapes
 

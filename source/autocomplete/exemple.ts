@@ -1,5 +1,4 @@
-import { ApplicationCommandOptionChoiceData } from 'discord.js';
-import { PAutocomplete } from '../types';
+import type { Discord, Bot } from '../types';
 
 export default {
     name: 'exemple',
@@ -20,7 +19,7 @@ export default {
                 { name: 'Le Retour du Jedi', value: 'le_retour_du_jedi' },
                 { name: 'Rogue One: A Star Wars Story', value: 'rogue_one' },
                 { name: 'Solo: A Star Wars Story', value: 'solo' }
-            ] as ApplicationCommandOptionChoiceData[]
+            ] as Discord.ApplicationCommandOptionChoiceData[]
         ).filter((v) =>
             v.name
                 .toLowerCase()
@@ -29,4 +28,4 @@ export default {
 
         interaction.respond(options);
     }
-} as PAutocomplete;
+} as Bot.Autocomplete;
