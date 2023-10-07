@@ -1,5 +1,4 @@
-import type { Bot } from '../types';
-import type { ApplicationCommandOptionChoiceData } from 'discord.js';
+import type { Discord, Bot } from '../types';
 
 export default {
     name: 'exemple',
@@ -20,7 +19,7 @@ export default {
                 { name: 'Le Retour du Jedi', value: 'le_retour_du_jedi' },
                 { name: 'Rogue One: A Star Wars Story', value: 'rogue_one' },
                 { name: 'Solo: A Star Wars Story', value: 'solo' }
-            ] as ApplicationCommandOptionChoiceData[]
+            ] as Discord.ApplicationCommandOptionChoiceData[]
         ).filter((v) =>
             v.name
                 .toLowerCase()

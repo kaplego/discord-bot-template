@@ -1,5 +1,4 @@
-import Discord, { Locale, Partials } from 'discord.js';
-import dotenv from 'dotenv';
+import { Discord } from './types';
 import {
     init,
     loadAutocompletes,
@@ -7,10 +6,10 @@ import {
     loadComponents,
     loadEvents
 } from './utils/loaders';
-import LogManager from './utils/logs';
 import { LocalesManager } from './utils/localization';
-import webLogs from './modules/weblogs/weblogs';
+import LogManager from './utils/logs';
 import Convert from 'ansi-to-html';
+import dotenv from 'dotenv';
 
 export const convert = new Convert({
     colors: {
@@ -28,14 +27,14 @@ dotenv.config();
 
 const client = new Discord.Client({
     intents: [],
-    partials: [Partials.Channel, Partials.GuildMember]
+    partials: [Discord.Partials.Channel, Discord.Partials.GuildMember]
 });
 
 /**
  * Le gestionnaire de logs.
  */
 export const logging = new LogManager();
-export const locales = new LocalesManager(Locale.EnglishGB);
+export const locales = new LocalesManager(Discord.Locale.EnglishGB);
 
 (async () => {
     let error = false;
@@ -69,9 +68,6 @@ export const locales = new LocalesManager(Locale.EnglishGB);
         logging.critical(err);
         error = true;
     });
-
-    // Créer le serveur weblogs
-    webLogs(logging);
 
     if (error) throw new Error('An error occured while loading the bot.');
 

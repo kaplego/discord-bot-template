@@ -1,5 +1,8 @@
-import type { Bot } from '../types';
-import type { AnySelectMenuInteraction } from 'discord.js';
+import type {
+    InteractionTypeCommand,
+    InteractionTypeComponent
+} from '../types/bot_data';
+import type { Bot, Discord } from '../types';
 import {
     Autocompletes,
     Buttons,
@@ -17,8 +20,6 @@ import { logging } from '..';
 export default {
     name: 'interactionCreate',
     listener([interaction], client) {
-        type InteractionTypeCommand = 'Slash' | 'Message' | 'User';
-        type InteractionTypeComponent = 'Button' | 'Modal' | 'SelectMenu';
         let interactionLogString:
             | ''
             | 'Error'
@@ -157,14 +158,16 @@ export default {
                         // et que l'id de l'interaction correspond à l'id du menu
                         (!select_menu.component.regex &&
                             select_menu.component.id ===
-                                (interaction as AnySelectMenuInteraction)
-                                    .customId) ||
+                                (
+                                    interaction as Discord.AnySelectMenuInteraction
+                                ).customId) ||
                         // Ou si le menu accepte les Regex
                         // et que l'id de l'interaction correspond au Regex du menu
                         (select_menu.component.regex instanceof RegExp &&
                             select_menu.component.regex.test(
-                                (interaction as AnySelectMenuInteraction)
-                                    .customId
+                                (
+                                    interaction as Discord.AnySelectMenuInteraction
+                                ).customId
                             ))
                     ) {
                         select_menu.execute(interaction, client);

@@ -1,17 +1,16 @@
-import type { Bot } from '../../types';
-import { EmbedBuilder, GuildMember } from 'discord.js';
+import { Discord, type Bot } from '../../types';
 
 export default {
     command: {
         name: 'Infos utilisateur'
     },
     execute(interaction, client) {
-        const member = interaction.targetMember as GuildMember;
+        const member = interaction.targetMember as Discord.GuildMember;
 
         interaction.reply({
             // Renvoyer un embed
             embeds: [
-                new EmbedBuilder()
+                new Discord.EmbedBuilder()
                     // Avec comme titre le pseudo de l'utilisateur visé
                     .setTitle(
                         `${

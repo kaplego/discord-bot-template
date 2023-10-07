@@ -8,3 +8,7 @@ declare type Log = {
     htmlMessage?: string;
     args: any[];
 };
+
+type LogEvents = {
+    logAdd: (log: Log) => void;
+};

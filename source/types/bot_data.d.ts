@@ -180,6 +180,9 @@ declare interface Autocomplete {
     ) => Promise<unknown> | unknown;
 }
 
+export declare type InteractionTypeCommand = 'Slash' | 'Message' | 'User';
+export declare type InteractionTypeComponent = 'Button' | 'Modal' | 'SelectMenu';
+
 export type {
     Event,
     SlashCommand,

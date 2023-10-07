@@ -1,59 +1,5 @@
-import type { Locale } from 'discord.js';
-import { asyncForEach, fs } from './utils';
-
-type localesObject = {
-    [key: string]: string | localesObject;
-};
-
-type LocalesMap = Map<Locale, localesObject>;
-
-/**
- * Un objet contenant des méthodes pour obtenir les traductions d'une commande.
- */
-declare interface CommandLocalesManager {
-    getOne(name: string, locale?: Locale): string;
-    get(name: string):
-        | {
-              [key in Locale]?: string;
-          }
-        | null;
-    /**
-     * Récupérer les traductions d'une option d'une commande.
-     * @param optionName Le nom de l'option.
-     * @returns Un objet contenant des méthodes pour obtenir les traductions de l'option.
-     */
-    option(optionName: string): OptionLocalesManager;
-}
-
-/**
- * Un objet contenant des méthodes pour obtenir des traductions d'une option.
- */
-interface OptionLocalesManager {
-    getOne(name: string, locale?: Locale): string;
-    get(name: string):
-        | {
-              [key in Locale]?: string;
-          }
-        | null;
-    /**
-     * Récupérer les traductions d'un choix d'une option.
-     * @param choiceName Le nom du choix.
-     * @returns Un objet contenant des méthodes pour obtenir les traductions du choix.
-     */
-    choice(choiceName: string): ChoiceLocalesManager;
-}
-
-/**
- * Un objet contenant des méthodes pour obtenir des traductions d'un choix.
- */
-interface ChoiceLocalesManager {
-    getOne(name: string, locale?: Locale): string;
-    get(name: string):
-        | {
-              [key in Locale]?: string;
-          }
-        | null;
-}
+import { asyncForEach } from './utils';
+import { Discord, fs } from '../types';
 
 /**
  * La classe de gestion des traductions.
@@ -62,13 +8,13 @@ export class LocalesManager {
     /** Les traductions chargées. */
     protected locales: LocalesMap;
     /** La langue par défaut. */
-    public defaultLocale: Locale;
+    public defaultLocale: Discord.Locale;
 
     /**
      * Créer un nouveau gestionnaire de traductions.
      * @param defaultLocale La langue par défaut.
      */
-    constructor(defaultLocale: Locale) {
+    constructor(defaultLocale: Discord.Locale) {
         this.defaultLocale = defaultLocale;
         this.locales = new Map();
     }
@@ -81,7 +27,7 @@ export class LocalesManager {
 
         await asyncForEach(fs.readdirSync(folderName), async (filename) => {
             if (!filename.endsWith('.json')) return;
-            let locale = filename.split('.')[0] as Locale;
+            let locale = filename.split('.')[0] as Discord.Locale;
             let file = await import(`../../${folderName}/${filename}`);
             this.locales.set(locale, file);
         });
@@ -93,7 +39,7 @@ export class LocalesManager {
      * @param locale La langue de la traduction.
      * @returns La traduction, ou null si elle n'existe pas.
      */
-    public getOne(name: string, locale?: Locale): string {
+    public getOne(name: string, locale?: Discord.Locale): string {
         if (!locale) locale = this.defaultLocale;
 
         if (!this.locales.has(locale)) locale = this.defaultLocale;
@@ -117,10 +63,10 @@ export class LocalesManager {
      */
     public get(name: string):
         | {
-              [key in Locale]?: string;
+              [key in Discord.Locale]?: string;
           }
         | null {
-        let value: Partial<Record<Locale, string>> = {};
+        let value: Partial<Record<Discord.Locale, string>> = {};
 
         this.locales.forEach((locale, localeID) => {
             let currentVal = name
@@ -142,7 +88,7 @@ export class LocalesManager {
     private baseObject(path: string) {
         let manager = this;
         return {
-            getOne(name: string, locale?: Locale) {
+            getOne(name: string, locale?: Discord.Locale) {
                 return manager.getOne(`${path}.${name}`, locale);
             },
             get(name: string) {

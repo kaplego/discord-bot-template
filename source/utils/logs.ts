@@ -1,13 +1,9 @@
-import fs from 'fs';
+import { fs } from '../types';
+import { convert } from '..';
 import moment from 'moment';
 import 'colors';
-import { convert } from '..';
 
 const LOG_FOLDER = process.env.LOG_FOLDER || './logs';
-
-type LogEvents = {
-    logAdd: (log: Log) => void;
-};
 
 /**
  * Le gestionnaire de logs.

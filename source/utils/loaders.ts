@@ -1,9 +1,4 @@
-import type { Bot } from '../types';
-import fs from 'fs';
-import Discord, {
-    ApplicationCommand,
-    ApplicationCommandType
-} from 'discord.js';
+import { Discord, fs, type Bot } from '../types';
 import { asyncForEach } from './utils';
 import { logging } from '..';
 
@@ -85,7 +80,7 @@ export const MessageActions = new Map<string, Bot.MessageCommand>();
 export const UserActions = new Map<string, Bot.UserCommand>();
 
 /** Liste de toutes les commandes */
-export const AllCommands = [] as ApplicationCommand[];
+export const AllCommands = [] as Discord.ApplicationCommand[];
 
 /** Liste des commandes privées de type ChatInput */
 export const PrivateChatInputs = new Map<string, Bot.SlashCommand>();
@@ -95,7 +90,7 @@ export const PrivateMessageActions = new Map<string, Bot.MessageCommand>();
 export const PrivateUserActions = new Map<string, Bot.UserCommand>();
 
 /** Liste des commandes privées */
-export const PrivateAllCommands = [] as ApplicationCommand[];
+export const PrivateAllCommands = [] as Discord.ApplicationCommand[];
 
 /**
  * Charger les commandes du bot.
@@ -167,7 +162,7 @@ export async function loadCommands(): Promise<void> {
                 switch (command_type) {
                     case 'chat_input':
                         filedata.command.type =
-                            ApplicationCommandType.ChatInput;
+                            Discord.ApplicationCommandType.ChatInput;
 
                         if (file.name.startsWith('$'))
                             PrivateChatInputs.set(
@@ -182,7 +177,8 @@ export async function loadCommands(): Promise<void> {
 
                         break;
                     case 'message_action':
-                        filedata.command.type = ApplicationCommandType.Message;
+                        filedata.command.type =
+                            Discord.ApplicationCommandType.Message;
 
                         if (file.name.startsWith('$'))
                             PrivateMessageActions.set(
@@ -197,7 +193,8 @@ export async function loadCommands(): Promise<void> {
 
                         break;
                     case 'user_action':
-                        filedata.command.type = ApplicationCommandType.User;
+                        filedata.command.type =
+                            Discord.ApplicationCommandType.User;
 
                         if (file.name.startsWith('$'))
                             PrivateUserActions.set(

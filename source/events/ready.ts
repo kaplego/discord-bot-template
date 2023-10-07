@@ -1,7 +1,6 @@
-import type { Bot } from '../types';
-import type { Discord } from '../utils/utils';
-import { logging } from '..';
+import type { Discord, Bot } from '../types';
 import { AllCommands, PrivateAllCommands } from '../utils/loaders';
+import { logging } from '..';
 
 export default {
     name: 'ready',

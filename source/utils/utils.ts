@@ -7,6 +7,3 @@ export const asyncForEach = async function <T>(
         await callback(array[index], index, array);
     }
 };
-
-export { default as fs } from 'fs';
-export { default as Discord } from 'discord.js';

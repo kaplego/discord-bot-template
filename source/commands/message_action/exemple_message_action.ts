@@ -1,9 +1,4 @@
-import type { Bot } from '../../types';
-import {
-    ActionRowBuilder,
-    EmbedBuilder,
-    UserSelectMenuBuilder
-} from 'discord.js';
+import { Discord, type Bot } from '../../types';
 
 export default {
     command: {
@@ -13,7 +8,7 @@ export default {
         interaction.reply({
             // Renvoyer un embed avec comme info si le message est épinglé
             embeds: [
-                new EmbedBuilder()
+                new Discord.EmbedBuilder()
                     .setTitle(`Le message sélectionné`)
                     .setDescription(
                         `${
@@ -25,8 +20,8 @@ export default {
             ],
             // Avec un menu de sélection d'utilisateurs
             components: [
-                new ActionRowBuilder<UserSelectMenuBuilder>().setComponents(
-                    new UserSelectMenuBuilder()
+                new Discord.ActionRowBuilder<Discord.UserSelectMenuBuilder>().setComponents(
+                    new Discord.UserSelectMenuBuilder()
                         .setCustomId('select_menu')
                         .setPlaceholder('Un menu de sélection')
                 )
