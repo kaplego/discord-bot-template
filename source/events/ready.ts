@@ -1,4 +1,5 @@
-import type { Discord, Bot } from '../types';
+import type { Bot } from '../types';
+import type { Discord } from '../utils';
 import { AllCommands, PrivateAllCommands } from '../utils/loaders';
 import { logging } from '..';
 

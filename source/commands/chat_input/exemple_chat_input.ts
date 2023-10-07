@@ -1,5 +1,6 @@
-import { Discord, type Bot } from '../../types';
+import type { Bot } from '../../types';
 import { locales } from '../..';
+import { Discord } from '../../utils';
 
 const commandLocales = locales.command('slash', 'exemple');
 

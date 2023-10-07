@@ -1,4 +1,5 @@
-import type { Discord, Bot } from '../types';
+import type { Bot } from '../types';
+import type { Discord } from '../utils';
 
 export default {
     name: 'exemple',

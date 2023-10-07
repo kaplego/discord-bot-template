@@ -1,5 +1,5 @@
-import { Discord, fs, type Bot } from '../types';
-import { asyncForEach } from './utils';
+import type { Bot } from '../types';
+import { Discord, asyncForEach, fs } from '.';
 import { logging } from '..';
 
 /** Le chemin vers le dossier du code complié, à partir de la racine du projet. */
