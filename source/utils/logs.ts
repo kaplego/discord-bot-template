@@ -1,6 +1,6 @@
-import { fs } from '../types';
 import { convert } from '..';
 import moment from 'moment';
+import { fs } from '.';
 import 'colors';
 
 const LOG_FOLDER = process.env.LOG_FOLDER || './logs';

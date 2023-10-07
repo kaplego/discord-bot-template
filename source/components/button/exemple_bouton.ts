@@ -1,5 +1,6 @@
-import { Discord, type Bot } from '../../types';
+import type { Bot } from '../../types';
 import { ActionRowBuilder, TextInputBuilder } from '@discordjs/builders';
+import { Discord } from '../../utils';
 
 export default {
     component: {

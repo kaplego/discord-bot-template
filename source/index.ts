@@ -1,4 +1,3 @@
-import { Discord } from './types';
 import {
     init,
     loadAutocompletes,
@@ -9,6 +8,7 @@ import {
 import { LocalesManager } from './utils/localization';
 import LogManager from './utils/logs';
 import Convert from 'ansi-to-html';
+import { Discord } from './utils';
 import dotenv from 'dotenv';
 
 export const convert = new Convert({

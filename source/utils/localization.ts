@@ -1,5 +1,4 @@
-import { asyncForEach } from './utils';
-import { Discord, fs } from '../types';
+import { Discord, asyncForEach, fs } from '.';
 
 /**
  * La classe de gestion des traductions.

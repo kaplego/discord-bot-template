@@ -2,7 +2,8 @@ import type {
     InteractionTypeCommand,
     InteractionTypeComponent
 } from '../types/bot_data';
-import type { Bot, Discord } from '../types';
+import type { Discord } from '../utils';
+import type { Bot } from '../types';
 import {
     Autocompletes,
     Buttons,
