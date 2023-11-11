@@ -2,7 +2,7 @@
 
 Ce modèle est un modèle de base pour vous aider à démarrer rapidement la création de votre propre bot Discord en utilisant TypeScript. Il comprend une structure de base, des exemples de commandes, de composants et de gestion d'événements pour vous aider à vous familiariser avec le développement de bots Discord.
 
-## Fonctionnalités
+# Fonctionnalités
 
 Ce modèle propose des fonctionnalités préconfigurées pour simplifier la création de ton bot Discord en TypeScript. Ci-dessous, tu trouveras des exemples de fonctionnalités populaires, prêtes à être utilisées. Il est facile à comprendre et à personnaliser, ce qui te permettra de créer un bot Discord rapidement et sans te préoccuper de la configuration de base.
 
@@ -18,14 +18,14 @@ Ce modèle propose des fonctionnalités préconfigurées pour simplifier la cré
 -   Autocomplétions
 -   Traductions ("locales" / "localizations")
 
-## Installation
+# Installation
 
-### Prérequis
+## Prérequis
 
 -   [Node.js](https://nodejs.org/en/) v18.x.x
 -   [NPM](https://www.npmjs.com/)
 
-### Dépendances
+## Dépendances
 
 (automatiquement installées lors de l'utilisation de `npm install`)
 
@@ -36,9 +36,8 @@ Ce modèle propose des fonctionnalités préconfigurées pour simplifier la cré
 | [dotenv](https://www.npmjs.com/package/dotenv)             | v16.3.1           | Pour charger les variables  d'environnement    |
 | [colors](https://www.npmjs.com/package/colors)             | v1.4.0            | Pour ajouter des couleurs aux logs             |
 | [moment](https://www.npmjs.com/package/moment)             | v2.29.4           | Pour afficher les heures des logs              |
-| [ansi-to-html](https://www.npmjs.com/package/ansi-to-html) | v0.7.2            | Pour convertir les logs en HTML                |
 
-### Étapes
+## Étapes
 
 1. Créez une application sur le portail développeur Discord ([guide](https://discord.com/developers/docs/getting-started#step-1-creating-an-app)).
 
@@ -53,9 +52,9 @@ Ce modèle propose des fonctionnalités préconfigurées pour simplifier la cré
 7. Compilez le code TypeScript vers JavaScript: `npm run build`
 8. Démarrez le bot: `npm start`
 
-## Configuration
+# Configuration
 
-### Variables d'environnement
+## Variables d'environnement
 
 | Nom de la variable    | Description                                |
 | --------------------- | ------------------------------------------ |
@@ -73,7 +72,7 @@ Ce modèle propose des fonctionnalités préconfigurées pour simplifier la cré
 
 <sup>1</sup> ⚠️ Modifier les variables `BUILD_DIR` et `SOURCE_DIR` ne change pas le dossier source ou le dossier compilé. Pour changer ces dossiers, <u>vous devez également modifier le fichier `tsconfig.json`</u> (`rootDir` pour le dossier source, `outDir` pour le dossier de build).
 
-### Structure et nommage des fichiers
+## Structure et nommage des fichiers
 
 -   Utilisez `$` au début du nom de fichier d'une commande pour la rendre privée (seulement utilisable dans le [serveur privé](#variables-denvironnement)).
 -   Utilisez `__` au début du nom d'un fichier pour ne pas le considérer comme une commande, un composant, une autocomplétion ou un événement.
@@ -124,13 +123,13 @@ racine du projet/
 └── .env.example                               Fichier d'exemple de variables d'environnement (à renommer en .env et à modifier)
 ```
 
-## Documentation supplémentaire
+# Documentation supplémentaire
 
 -   [Discord Developer Portal](https://discord.com/developers/docs/intro)
 -   [Discord.JS](https://old.discordjs.dev/#/docs/discord.js/14.13.0/general/welcome)
 -   [DiscordJS.Guide](https://discordjs.guide/)
 
-## Crédits
+# Crédits
 
 Licence: [GNU GPLv3](https://github.com/kaplego/discord-bot-template/blob/main/LICENSE.md)
 
