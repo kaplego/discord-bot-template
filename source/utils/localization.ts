@@ -1,4 +1,4 @@
-import { Discord, asyncForEach, fs } from '.';
+import { DiscordTypes, asyncForEach, fs } from '.';
 
 /**
  * La classe de gestion des traductions.
@@ -7,13 +7,13 @@ export class LocalesManager {
     /** Les traductions chargées. */
     protected locales: LocalesMap;
     /** La langue par défaut. */
-    public defaultLocale: Discord.Locale;
+    public defaultLocale: DiscordTypes.Locale;
 
     /**
      * Créer un nouveau gestionnaire de traductions.
      * @param defaultLocale La langue par défaut.
      */
-    constructor(defaultLocale: Discord.Locale) {
+    constructor(defaultLocale: DiscordTypes.Locale) {
         this.defaultLocale = defaultLocale;
         this.locales = new Map();
     }
@@ -26,7 +26,7 @@ export class LocalesManager {
 
         await asyncForEach(fs.readdirSync(folderName), async (filename) => {
             if (!filename.endsWith('.json')) return;
-            let locale = filename.split('.')[0] as Discord.Locale;
+            let locale = filename.split('.')[0] as DiscordTypes.Locale;
             let file = await import(`../../${folderName}/${filename}`);
             this.locales.set(locale, file);
         });
@@ -38,7 +38,7 @@ export class LocalesManager {
      * @param locale La langue de la traduction.
      * @returns La traduction, ou null si elle n'existe pas.
      */
-    public getOne(name: string, locale?: Discord.Locale): string {
+    public getOne(name: string, locale?: DiscordTypes.Locale): string {
         if (!locale) locale = this.defaultLocale;
 
         if (!this.locales.has(locale)) locale = this.defaultLocale;
@@ -62,10 +62,10 @@ export class LocalesManager {
      */
     public get(name: string):
         | {
-              [key in Discord.Locale]?: string;
+              [key in DiscordTypes.Locale]?: string;
           }
         | null {
-        let value: Partial<Record<Discord.Locale, string>> = {};
+        let value: Partial<Record<DiscordTypes.Locale, string>> = {};
 
         this.locales.forEach((locale, localeID) => {
             let currentVal = name
@@ -87,7 +87,7 @@ export class LocalesManager {
     private baseObject(path: string) {
         let manager = this;
         return {
-            getOne(name: string, locale?: Discord.Locale) {
+            getOne(name: string, locale?: DiscordTypes.Locale) {
                 return manager.getOne(`${path}.${name}`, locale);
             },
             get(name: string) {

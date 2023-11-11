@@ -1,6 +1,6 @@
 import type { Bot } from '../../types';
 import { locales } from '../..';
-import { Discord } from '../../utils';
+import { Discord, DiscordTypes } from '../../utils';
 
 const commandLocales = locales.command('slash', 'exemple');
 
@@ -11,7 +11,7 @@ export default {
         descriptionLocalizations: commandLocales.get('description'),
         options: [
             {
-                type: Discord.ApplicationCommandOptionType.String,
+                type: DiscordTypes.ApplicationCommandOptionType.String,
                 name: 'autocomplete',
                 nameLocalizations: commandLocales
                     .option('autocomplete')
@@ -41,7 +41,7 @@ export default {
                         // Définir l'identifiant unique
                         .setCustomId(`bouton_${Math.floor(Math.random() * 10)}`)
                         // Définir le type de bouton (primary, secondary, success, danger, link)
-                        .setStyle(Discord.ButtonStyle.Primary)
+                        .setStyle(DiscordTypes.ButtonStyle.Primary)
                         // Définir le text affiché sur le bouton
                         .setLabel('Ouvrir un formulaire')
                 )

@@ -9,4 +9,5 @@ export const asyncForEach = async function <T>(
 };
 
 export * as Discord from 'discord.js';
+export * as DiscordTypes from 'discord-api-types/v10';
 export * as fs from 'fs';

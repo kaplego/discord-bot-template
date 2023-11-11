@@ -108,10 +108,11 @@ export default {
             // Si l'interaction provient d'un composant
         } else if (
             interaction.isMessageComponent() ||
+            interaction.isAnySelectMenu() ||
             interaction.isModalSubmit()
         ) {
             // Si le composant est un bouton
-            if (interaction.isButton()) {
+            if (interaction.isButton() && !interaction.isAnySelectMenu()) {
                 interactionLogString = 'Component:Button';
                 // Parcourir chaque bouton enregistré
                 for (const [name, button] of Buttons.entries()) {
@@ -151,7 +152,7 @@ export default {
                 }
 
                 // Si le composant est un menu de sélection
-            } else if (interaction.isAnySelectMenu()) {
+            } else {
                 interactionLogString += 'Component:SelectMenu';
                 for (const [name, select_menu] of SelectMenus.entries()) {
                     if (

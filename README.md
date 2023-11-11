@@ -17,6 +17,7 @@ Ce modèle propose des fonctionnalités préconfigurées pour simplifier la cré
     -   Formulaires ("modals")
 -   Autocomplétions
 -   Traductions ("locales" / "localizations")
+-   Modules
 
 # Installation
 
@@ -29,46 +30,50 @@ Ce modèle propose des fonctionnalités préconfigurées pour simplifier la cré
 
 (automatiquement installées lors de l'utilisation de `npm install`)
 
-| Dépendance                                                 | Version           | Description                                    |
-| ---------------------------------------------------------- | ----------------- | ---------------------------------------------- |
-| [typescript](https://www.npmjs.com/package/typescript)     | v5.1.6            | Pour compiler le code TypeScript en JavaScript |
-| [discord.js](https://www.npmjs.com/package/discord.js)     | v14.13.0          | Pour intéragir avec l'API Discord              |
-| [dotenv](https://www.npmjs.com/package/dotenv)             | v16.3.1           | Pour charger les variables  d'environnement    |
-| [colors](https://www.npmjs.com/package/colors)             | v1.4.0            | Pour ajouter des couleurs aux logs             |
-| [moment](https://www.npmjs.com/package/moment)             | v2.29.4           | Pour afficher les heures des logs              |
+| Dépendance                                             | Version  | Description                                    |
+| ------------------------------------------------------ | -------- | ---------------------------------------------- |
+| [typescript](https://www.npmjs.com/package/typescript) | v5.1.6   | Pour compiler le code TypeScript en JavaScript |
+| [discord.js](https://www.npmjs.com/package/discord.js) | v14.13.0 | Pour intéragir avec l'API Discord              |
+| [dotenv](https://www.npmjs.com/package/dotenv)         | v16.3.1  | Pour charger les variables d'environnement     |
+| [colors](https://www.npmjs.com/package/colors)         | v1.4.0   | Pour ajouter des couleurs aux logs             |
+| [moment](https://www.npmjs.com/package/moment)         | v2.29.4  | Pour afficher les heures des logs              |
 
 ## Étapes
 
 1. Créez une application sur le portail développeur Discord ([guide](https://discord.com/developers/docs/getting-started#step-1-creating-an-app)).
 
-   Vous aurez besoin de ces informations:
+    Vous aurez besoin de ces informations:
+
     - L'ID de votre application
     - Le token de votre bot
     - (Optionnel) L'ID de votre serveur privé (pour les commandes privées)
-3. Clonez le dépôt: `git clone https://github.com/kaplego/discord-bot-template.git`
-4. Accédez au dossier: `cd discord-bot-template`
-5. Installez les [dépendances](#dépendances): `npm install`
-6. Renommez le fichier `.env.example` en `.env` et modifiez les [variables d'environnement](#variables-denvironnement) avec les informations de votre bot et de votre serveur privé.
-7. Compilez le code TypeScript vers JavaScript: `npm run build`
-8. Démarrez le bot: `npm start`
+
+2. Clonez le dépôt: `git clone https://github.com/kaplego/discord-bot-template.git`
+   Ou téléchargez le [code source](https://github.com/kaplego/discord-bot-template/archive/refs/heads/main.zip)
+3. Accédez au dossier: `cd discord-bot-template`
+4. Installez les [dépendances](#dépendances): `npm install`
+5. Renommez le fichier `.env.example` en `.env` et modifiez les [variables d'environnement](#variables-denvironnement) avec les informations de votre bot et de votre serveur privé.
+6. Compilez le code TypeScript vers JavaScript: `npm run build`
+7. Démarrez le bot: `npm start`
 
 # Configuration
 
 ## Variables d'environnement
 
-| Nom de la variable    | Description                                |
-| --------------------- | ------------------------------------------ |
-| `BOT_ID`              | L'ID de votre bot Discord.                 |
-| `BOT_TOKEN`           | Le token de votre bot Discord.             |
-| `PRIVATE_SERVER_ID`   | L'ID de votre serveur privé.               |
-| `BUILD_DIR`           | Le dossier de build.<sup>1</sup>           |
-| `SOURCE_DIR`          | Le dossier source.<sup>1</sup>             |
-| `LOGS_FOLDER`         | Le dossier de logs.                        |
-| `EVENTS_FOLDER`       | Le dossier de gestion événements.          |
-| `COMMANDS_FOLDER`     | Le dossier de gestion des commandes.       |
-| `COMPONENTS_FOLDER`   | Le dossier de gestion des composants.      |
-| `AUTOCOMPLETE_FOLDER` | Le dossier de gestion des autocomplétions. |
-| `LOCALES_FOLDER`      | Le dossier des fichiers de traduction.     |
+| Nom de la variable    | Description                                       |
+| --------------------- | ------------------------------------------------- |
+| `BOT_ID`              | L'ID de votre bot Discord.                        |
+| `BOT_TOKEN`           | Le token de votre bot Discord.                    |
+| `PRIVATE_SERVER_ID`   | L'ID de votre serveur privé.                      |
+| `BUILD_DIR`           | Le dossier de build.<sup>1</sup>                  |
+| `SOURCE_DIR`          | Le dossier source.<sup>1</sup>                    |
+| `LOGS_FOLDER`         | Le dossier de logs.                               |
+| `EVENTS_FOLDER`       | Le dossier de gestion événements.                 |
+| `COMMANDS_FOLDER`     | Le dossier de gestion des commandes.              |
+| `COMPONENTS_FOLDER`   | Le dossier de gestion des composants.             |
+| `AUTOCOMPLETE_FOLDER` | Le dossier de gestion des autocomplétions.        |
+| `MODULES_FOLDER`      | Le dossier contenant les modules supplémentaires. |
+| `LOCALES_FOLDER`      | Le dossier des fichiers de traduction.            |
 
 <sup>1</sup> ⚠️ Modifier les variables `BUILD_DIR` et `SOURCE_DIR` ne change pas le dossier source ou le dossier compilé. Pour changer ces dossiers, <u>vous devez également modifier le fichier `tsconfig.json`</u> (`rootDir` pour le dossier source, `outDir` pour le dossier de build).
 
@@ -110,7 +115,13 @@ racine du projet/
 |   │   ├── {nom autocomplétion}.ts            Script d'une autocomplétion
 |   │   └── ...
 |   ├── utils/                                 Fichiers utilitaires
-|   │   ├── loaders.ts                         Fichier de chargement des commandes, composants, autocomplétions et événements
+|   │   ├── loaders/
+|   |   |   ├── index.ts                       Fichier d'initalisation des différentes parties du bot
+|   |   |   ├── autocompletes.ts               Fichier d'initialisation des autocomplétions
+|   |   |   ├── commands.ts                    Fichier d'initialisation des commandes
+|   |   |   ├── components.ts                  Fichier d'initialisation des composants
+|   |   |   ├── events.ts                      Fichier d'initialisation des événements
+|   |   |   └── modules.ts                     Fichier d'initialisation des modules
 |   │   ├── localization.ts                    Fichier de gestion des traductions
 |   │   ├── logs.ts                            Fichier de gestion des logs
 |   │   └── utils.ts                           Fichier de fonctions utilitaires
@@ -123,6 +134,38 @@ racine du projet/
 └── .env.example                               Fichier d'exemple de variables d'environnement (à renommer en .env et à modifier)
 ```
 
+# Modules
+
+Il est possible de créer des modules que vous pouvez partager avec d'autres utilisateurs. Pour cela, il suffit de créer un dossier dans le dossier `modules` et d'y ajouter vos fichiers.
+
+Chaque module doit contenir un fichier `module.config.ts` qui contient les informations du module. Voici un exemple de fichier `module.config.ts`:
+
+**Attention**: Les modules ne sont pas installés automatiquement ! Vous devez le faire manuellement !
+
+```ts
+import type { Modules } from '../../types';
+
+export default {
+    // Le nom du module
+    name: 'exemple',
+    // La description du module
+    description: 'Un exemple de module',
+    // Le point d'entrée du module (sans l'extension)
+    main: 'index',
+    // Les packages NPM requis par le module
+    // **Attention**: Les packages ne sont pas installés automatiquement !
+    // Vous devez le faire manuellement !
+    nodeDependencies: {
+        package: '3.12.7',
+        anotherPackage: 'latest'
+    },
+    // Les autres modules requis par ce module
+    moduleDependencies: ['un-autre-module']
+} as Modules.Module;
+```
+
+:warning: L'auteur de ce dépôt n'est en aucun cas responsable des modules créés par d'autres utilisateurs. Il est **fortement recommandé** de vérifier le code source des modules avant de les utiliser.
+
 # Documentation supplémentaire
 
 -   [Discord Developer Portal](https://discord.com/developers/docs/intro)
@@ -131,6 +174,6 @@ racine du projet/
 
 # Crédits
 
-Licence: [GNU GPLv3](https://github.com/kaplego/discord-bot-template/blob/main/LICENSE.md)
+Licence: [GNU GPLv3](https://github.com/kaplego/discord-bot-template/blob/main/LICENCE.md)
 
 Auteur: [kaplego](https://github.com/kaplego)

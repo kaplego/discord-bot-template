@@ -1,4 +1,3 @@
-import { convert } from '..';
 import moment from 'moment';
 import { fs } from '.';
 import 'colors';
@@ -73,7 +72,7 @@ export default class LogManager {
     private logData(
         level: 'LOG' | 'INFO' | 'WARN' | 'ERROR' | 'CRITICAL',
         message: string
-    ): Omit<Log, 'htmlMessage' | 'args'> {
+    ): Omit<Log, 'args'> {
         const date = moment();
         const dateString = date.format('DD-MM-YYYY HH:mm:ss:SSS ZZ');
 
@@ -141,7 +140,6 @@ export default class LogManager {
 
         const log = {
             ...this.logData('LOG', message),
-            htmlMessage: convert.toHtml(message.replace(/ /g, '\u00A0')),
             args
         };
 
@@ -169,7 +167,6 @@ export default class LogManager {
 
         const log = {
             ...this.logData('INFO', message),
-            htmlMessage: convert.toHtml(message.replace(/ /g, '\u00A0')),
             args
         };
 
@@ -197,7 +194,6 @@ export default class LogManager {
 
         const log = {
             ...this.logData('WARN', message),
-            htmlMessage: convert.toHtml(message.replace(/ /g, '\u00A0')),
             args
         };
 
@@ -225,7 +221,6 @@ export default class LogManager {
 
         const log = {
             ...this.logData('ERROR', message),
-            htmlMessage: convert.toHtml(message.replace(/ /g, '\u00A0')),
             args
         };
 
@@ -252,8 +247,7 @@ export default class LogManager {
         this.checkLogFolder();
 
         const log = {
-            ...this.logData('CRITICAL', message),
-            htmlMessage: convert.toHtml(message.replace(/ /g, '\u00A0')),
+            ...this.logData('CRITICAL', String(message)),
             args
         };
 
@@ -261,9 +255,7 @@ export default class LogManager {
             `./${LOG_FOLDER}/${this.logFile}`,
             `[${log.dateString}] [${log.paddedLevel}] ${log.textMessage}\n`
         );
-
         this.logs.set(this.logs.size, log);
-
         this.callListener('logAdd', [log]);
 
         console.error('[CRITICAL]'.bgRed.white.bold, message);

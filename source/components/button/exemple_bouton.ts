@@ -1,6 +1,6 @@
 import type { Bot } from '../../types';
 import { ActionRowBuilder, TextInputBuilder } from '@discordjs/builders';
-import { Discord } from '../../utils';
+import { Discord, DiscordTypes } from '../../utils';
 
 export default {
     component: {
@@ -24,7 +24,7 @@ export default {
                             // Définir l'identifiant unique
                             .setCustomId('input')
                             // Définir le type de champ (court ou paragraphe)
-                            .setStyle(Discord.TextInputStyle.Short)
+                            .setStyle(DiscordTypes.TextInputStyle.Short)
                             // Définir le label affiché
                             .setLabel('Un champ de texte')
                             // Définir le placeholder affiché quand le champ est vide
