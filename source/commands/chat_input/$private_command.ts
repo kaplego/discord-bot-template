@@ -1,5 +1,5 @@
 import type { Bot } from '../../types';
-import { Discord } from '../../utils';
+import { DiscordTypes } from '../../utils';
 import { locales } from '../..';
 
 const commandLocales = locales.command('slash', 'private');
@@ -12,7 +12,7 @@ export default {
         descriptionLocalizations: commandLocales.get('description'),
         options: [
             {
-                type: Discord.ApplicationCommandOptionType.String,
+                type: DiscordTypes.ApplicationCommandOptionType.String,
                 name: commandLocales.option('option').getOne('name'),
                 nameLocalizations: commandLocales.option('option').get('name'),
                 description: commandLocales

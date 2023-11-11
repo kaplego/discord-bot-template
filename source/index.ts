@@ -3,24 +3,14 @@ import {
     loadAutocompletes,
     loadCommands,
     loadComponents,
-    loadEvents
+    loadEvents,
+    loadModules
 } from './utils/loaders';
 import { LocalesManager } from './utils/localization';
 import LogManager from './utils/logs';
-import Convert from 'ansi-to-html';
-import { Discord } from './utils';
+import { Discord, DiscordTypes } from './utils';
 import dotenv from 'dotenv';
 
-export const convert = new Convert({
-    colors: {
-        0: '#000000',
-        1: '#da4232',
-        2: '#56b97f',
-        4: '#3b70c2',
-        5: '#ae48b6',
-        7: '#ffffff'
-    }
-});
 
 // Charger les variables de configuration
 dotenv.config();
@@ -34,7 +24,7 @@ const client = new Discord.Client({
  * Le gestionnaire de logs.
  */
 export const logging = new LogManager();
-export const locales = new LocalesManager(Discord.Locale.EnglishGB);
+export const locales = new LocalesManager(DiscordTypes.Locale.EnglishGB);
 
 (async () => {
     let error = false;
@@ -65,6 +55,11 @@ export const locales = new LocalesManager(Discord.Locale.EnglishGB);
 
     // Charger les autocomplétitions
     await loadAutocompletes().catch((err) => {
+        logging.critical(err);
+        error = true;
+    });
+
+    await loadModules().catch((err) => {
         logging.critical(err);
         error = true;
     });

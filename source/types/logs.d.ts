@@ -5,7 +5,6 @@ declare type Log = {
     paddedLevel: string;
     message: string;
     textMessage: string;
-    htmlMessage?: string;
     args: any[];
 };
 
