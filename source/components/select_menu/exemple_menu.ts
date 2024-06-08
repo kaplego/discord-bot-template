@@ -4,7 +4,7 @@ export default {
     component: {
         id: 'select_menu'
     },
-    execute(interaction, client) {
+    execute(interaction) {
         // Renvoyer les valeurs sélectionnées
         interaction.reply({
             content: interaction.values.join(', '),

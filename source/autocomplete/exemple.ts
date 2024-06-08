@@ -3,8 +3,8 @@ import type { Discord } from '../utils';
 
 export default {
     name: 'exemple',
-    execute(interaction, client) {
-        let options = (
+    execute(interaction) {
+        const options = (
             [
                 { name: 'La Menace Fantôme', value: 'la_menace_fantome' },
                 { name: "L'Attaque des Clones", value: 'lattaque_des_clones' },

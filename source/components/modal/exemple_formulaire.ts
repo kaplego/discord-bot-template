@@ -4,7 +4,7 @@ export default {
     component: {
         id: 'formulaire'
     },
-    execute(interaction, client) {
+    execute(interaction) {
         // Renvoyer le contenu du champ de texte avec comme identifiant `input`
         interaction.reply({
             content: interaction.fields.getTextInputValue('input'),

@@ -49,7 +49,7 @@ export default {
             }
         ]
     },
-    async execute(interaction, client) {
+    async execute(interaction) {
         // Répondre à l'interaction avec un message traduit dans la langue de l'utilisateur (si disponible, sinon la langue par défaut)
         interaction.reply({
             content: commandLocales.getOne(

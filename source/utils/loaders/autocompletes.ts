@@ -53,7 +53,7 @@ export async function loadAutocompletes(): Promise<void> {
                 if (file.name.startsWith('__')) return;
 
                 // Lire le fichier
-                let filedata = (
+                const filedata = (
                     await import(
                         `../../${AUTOCOMPLETE_FOLDER}/${dir}/${file.name}`
                     )

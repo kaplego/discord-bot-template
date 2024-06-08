@@ -1,7 +1,7 @@
-import type { Bot } from "../../types";
-import { BUILD_DIR, COMMANDS_FOLDER, SOURCE_DIR } from ".";
-import { Discord, DiscordTypes, asyncForEach, fs } from "..";
-import { logging } from "../..";
+import type { Bot } from '../../types';
+import { BUILD_DIR, COMMANDS_FOLDER, SOURCE_DIR } from '.';
+import { Discord, DiscordTypes, asyncForEach, fs } from '..';
+import { logging } from '../..';
 
 /** Liste des commandes de type ChatInput */
 export const ChatInputs = new Map<string, Bot.SlashCommand>();
@@ -43,7 +43,7 @@ export async function loadCommands(): Promise<void> {
         /** Charger un dossier de scripts */
         async function loadDir(dir: string) {
             // Récupérer les fichiers de ce dossier
-            let files = fs.readdirSync(
+            const files = fs.readdirSync(
                 `${BUILD_DIR}/${COMMANDS_FOLDER}/${dir}`,
                 {
                     withFileTypes: true
@@ -82,59 +82,62 @@ export async function loadCommands(): Promise<void> {
                 if (file.name.startsWith('__')) return;
 
                 // Lire le fichier
-                let filedata = (
+                const filedata = (
                     await import(`../../${COMMANDS_FOLDER}/${dir}/${file.name}`)
                 ).default as
                     | Bot.SlashCommand
                     | Bot.MessageCommand
                     | Bot.UserCommand;
 
+                let data;
+
                 // Ajouter la commande dans la liste correspondante à son type
                 switch (command_type) {
                     case 'chat_input':
-                        filedata.command.type =
-                            DiscordTypes.ApplicationCommandType.ChatInput;
+                        data = {
+                            ...(filedata as Bot.SlashCommand),
+                            command: {
+                                ...filedata.command,
+                                type: DiscordTypes.ApplicationCommandType
+                                    .ChatInput
+                            } as Discord.ChatInputApplicationCommandData
+                        };
 
                         if (file.name.startsWith('$'))
-                            PrivateChatInputs.set(
-                                filedata.command.name,
-                                filedata as Bot.SlashCommand
-                            );
-                        else
-                            ChatInputs.set(
-                                filedata.command.name,
-                                filedata as Bot.SlashCommand
-                            );
+                            PrivateChatInputs.set(filedata.command.name, data);
+                        else ChatInputs.set(filedata.command.name, data);
 
                         break;
                     case 'message_action':
-                        filedata.command.type = DiscordTypes.ApplicationCommandType.Message;
+                        data = {
+                            ...(filedata as Bot.MessageCommand),
+                            command: {
+                                ...filedata.command,
+                                type: DiscordTypes.ApplicationCommandType
+                                    .Message
+                            } as Discord.MessageApplicationCommandData
+                        };
 
                         if (file.name.startsWith('$'))
                             PrivateMessageActions.set(
                                 filedata.command.name,
-                                filedata as Bot.MessageCommand
+                                data
                             );
-                        else
-                            MessageActions.set(
-                                filedata.command.name,
-                                filedata as Bot.MessageCommand
-                            );
+                        else MessageActions.set(filedata.command.name, data);
 
                         break;
                     case 'user_action':
-                        filedata.command.type = DiscordTypes.ApplicationCommandType.User;
+                        data = {
+                            ...(filedata as Bot.UserCommand),
+                            command: {
+                                ...filedata.command,
+                                type: DiscordTypes.ApplicationCommandType.User
+                            } as Discord.UserApplicationCommandData
+                        };
 
                         if (file.name.startsWith('$'))
-                            PrivateUserActions.set(
-                                filedata.command.name,
-                                filedata as Bot.UserCommand
-                            );
-                        else
-                            UserActions.set(
-                                filedata.command.name,
-                                filedata as Bot.UserCommand
-                            );
+                            PrivateUserActions.set(filedata.command.name, data);
+                        else UserActions.set(filedata.command.name, data);
 
                         break;
                     default:
@@ -159,7 +162,7 @@ export async function loadCommands(): Promise<void> {
         ...MessageActions.values(),
         ...UserActions.values()
     ].forEach((command) => {
-        AllCommands.push(command.command as any);
+        AllCommands.push(command.command as Discord.ApplicationCommand);
     });
 
     // Ajouter toutes les commandes privées à la liste `PrivateAllCommands`
@@ -168,6 +171,6 @@ export async function loadCommands(): Promise<void> {
         ...PrivateMessageActions.values(),
         ...PrivateUserActions.values()
     ].forEach((command) => {
-        PrivateAllCommands.push(command.command as any);
+        PrivateAllCommands.push(command.command as Discord.ApplicationCommand);
     });
 }

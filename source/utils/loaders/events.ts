@@ -10,7 +10,7 @@ import { logging } from '../..';
 export async function loadEvents(client: Discord.Client): Promise<void> {
     logging.info(' Loading events '.bgBlue.white);
     // Récupérer les fichiers du dossier "event"
-    let files = fs.readdirSync(`${BUILD_DIR}/${EVENTS_FOLDER}`, {
+    const files = fs.readdirSync(`${BUILD_DIR}/${EVENTS_FOLDER}`, {
         withFileTypes: true
     });
 
@@ -42,7 +42,7 @@ export async function loadEvents(client: Discord.Client): Promise<void> {
         if (file.name.startsWith('__')) return;
 
         // Lire le fichier
-        let filedata = (await import(`../../${EVENTS_FOLDER}/${file.name}`))
+        const filedata = (await import(`../../${EVENTS_FOLDER}/${file.name}`))
             .default as Bot.Event<keyof Discord.ClientEvents>;
 
         logging.log(`◉ ${filedata.name}`.blue);
