@@ -7,7 +7,7 @@ export default {
         id: 'bouton',
         regex: /^bouton_[0-9]$/
     },
-    execute(interaction, client) {
+    execute(interaction) {
         // Afficher un formulaire
         interaction.showModal(
             new Discord.ModalBuilder()

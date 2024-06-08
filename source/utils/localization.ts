@@ -22,12 +22,12 @@ export class LocalesManager {
      * Initialiser le gestionnaire depuis le dossier des traductions.
      */
     public async load() {
-        let folderName = process.env.LOCALES_FOLDER ?? 'locales';
+        const folderName = process.env.LOCALES_FOLDER ?? 'locales';
 
         await asyncForEach(fs.readdirSync(folderName), async (filename) => {
             if (!filename.endsWith('.json')) return;
-            let locale = filename.split('.')[0] as DiscordTypes.Locale;
-            let file = await import(`../../${folderName}/${filename}`);
+            const locale = filename.split('.')[0] as DiscordTypes.Locale;
+            const file = await import(`../../${folderName}/${filename}`);
             this.locales.set(locale, file);
         });
     }
@@ -43,8 +43,8 @@ export class LocalesManager {
 
         if (!this.locales.has(locale)) locale = this.defaultLocale;
 
-        let localeData = this.locales.get(locale);
-        let value = name
+        const localeData = this.locales.get(locale);
+        const value = name
             .split('.')
             .reduce((a, b) => (a !== null && b in a ? a[b] : null), localeData);
 
@@ -65,10 +65,10 @@ export class LocalesManager {
               [key in DiscordTypes.Locale]?: string;
           }
         | null {
-        let value: Partial<Record<DiscordTypes.Locale, string>> = {};
+        const value: Partial<Record<DiscordTypes.Locale, string>> = {};
 
         this.locales.forEach((locale, localeID) => {
-            let currentVal = name
+            const currentVal = name
                 .split('.')
                 .reduce((a, b) => (a !== null && b in a ? a[b] : null), locale);
 

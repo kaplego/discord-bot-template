@@ -24,7 +24,7 @@ export default {
         let interactionLogString:
             | ''
             | 'Error'
-            | `Autocomplete`
+            | 'Autocomplete'
             | `Command:${InteractionTypeCommand}${' (PRIV)' | ''}`
             | `Component:${InteractionTypeComponent}` = '';
 
@@ -115,7 +115,7 @@ export default {
             if (interaction.isButton() && !interaction.isAnySelectMenu()) {
                 interactionLogString = 'Component:Button';
                 // Parcourir chaque bouton enregistré
-                for (const [name, button] of Buttons.entries()) {
+                for (const [, button] of Buttons.entries()) {
                     if (
                         // Si le bouton n'accepte pas les Regex
                         // et que l'id de l'interaction correspond à l'id du bouton
@@ -135,7 +135,7 @@ export default {
             } else if (interaction.isModalSubmit()) {
                 interactionLogString = 'Component:Modal';
                 // Parcourir chaque formulaire enregistré
-                for (const [name, modal] of Modals.entries()) {
+                for (const [, modal] of Modals.entries()) {
                     if (
                         // Si le formulaire n'accepte pas les Regex
                         // et que l'id de l'interaction correspond à l'id du formulaire
@@ -154,7 +154,7 @@ export default {
                 // Si le composant est un menu de sélection
             } else {
                 interactionLogString += 'Component:SelectMenu';
-                for (const [name, select_menu] of SelectMenus.entries()) {
+                for (const [, select_menu] of SelectMenus.entries()) {
                     if (
                         // Si le menu n'accepte pas les Regex
                         // et que l'id de l'interaction correspond à l'id du menu

@@ -5,7 +5,7 @@ export default {
     command: {
         name: 'Infos utilisateur'
     },
-    execute(interaction, client) {
+    execute(interaction) {
         const member = interaction.targetMember as Discord.GuildMember;
 
         interaction.reply({

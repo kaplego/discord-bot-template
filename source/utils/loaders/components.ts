@@ -36,7 +36,7 @@ export async function loadComponents(): Promise<void> {
         /** Charger un dossier de scripts */
         async function loadDir(dir: string) {
             // Lire le contenu du dossier `dir`
-            let files = fs.readdirSync(
+            const files = fs.readdirSync(
                 `${BUILD_DIR}/${COMPONENTS_FOLDER}/${dir}`,
                 {
                     withFileTypes: true
@@ -75,7 +75,7 @@ export async function loadComponents(): Promise<void> {
                 if (file.name.startsWith('__')) return;
 
                 // Lire le fichier
-                let filedata = (
+                const filedata = (
                     await import(`../../${COMPONENTS_FOLDER}/${dir}/${file.name}`)
                 ).default as Bot.Button | Bot.Modal | Bot.AnySelectMenu;
 

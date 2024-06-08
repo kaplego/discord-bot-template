@@ -57,17 +57,17 @@ export async function loadModules() {
         return;
 
     const modulesFolders = fs.readdirSync(`${BUILD_DIR}/${MODULES_FOLDER}/`, {
-        withFileTypes: true
+        withFileTypes: true,
     });
 
     // Créez une liste pour stocker les modules et leurs dépendances
     const modulesList: PartialModule[] = [];
 
     // Parcourir les dossiers des modules
-    await asyncForEach(modulesFolders, async (moduleFolder) => {
+    modulesFolders.forEach((moduleFolder) => {
         // Vérifier que le dossier est un dossier
         if (!moduleFolder.isDirectory()) return;
-        let folderName = moduleFolder.name;
+        const folderName = moduleFolder.name;
 
         // Vérifier que le dossier contient un fichier de configuration
         if (
@@ -75,53 +75,65 @@ export async function loadModules() {
                 `${SOURCE_DIR}/${MODULES_FOLDER}/${folderName}/module.config.ts`
             )
         ) {
-            return logging.error(
+            logging.error(
                 `Un dossier de module ${folderName} a été trouvé mais il ne contient pas de fichier de configuration.`
             );
+            return;
         }
 
         // Charger le fichier de configuration
         const moduleConfig =
-            require(`../../${MODULES_FOLDER}/${folderName}/module.config`)?.default as Modules.Module;
+            require(`../../${MODULES_FOLDER}/${folderName}/module.config`)
+                ?.default as Modules.Module;
 
-        if (!moduleConfig)
+        if (!moduleConfig) {
             logging.warn(`Impossible de charger le module ${folderName}.`);
+            return;
+        }
 
         // Vérifier que le fichier de configuration est conforme
-        if (!moduleConfig.name || !moduleConfig.main)
-            return logging.error(
+        if (!moduleConfig.name || !moduleConfig.main) {
+            logging.error(
                 `Le fichier de configuration du module ${folderName} est invalide.`
             );
+            return;
+        }
 
         const moduleGlobalConfig = modulesGlobalConfig.find(
             (module) => module.name === moduleConfig.name
         );
 
         // Vérifier que la configuration globale du module existe
-        if (!moduleGlobalConfig)
-            return logging.error(
+        if (!moduleGlobalConfig) {
+            logging.error(
                 `Un module ${folderName} a été trouvé mais n'est pas déclaré dans le fichier \`modules.config.ts\`.`
             );
+            return;
+        }
 
         // Vérifier que le module est activé
-        if (!moduleGlobalConfig.enabled)
-            return logging.info(`  ◈ ${moduleConfig.name}`.gray);
+        if (!moduleGlobalConfig.enabled) {
+            logging.info(`  ◈ ${moduleConfig.name}`.gray);
+            return;
+        }
 
         // Vérifier que le fichier principal existe
         if (
             !fs.existsSync(
                 `${BUILD_DIR}/${MODULES_FOLDER}/${folderName}/${moduleConfig.main}.js`
             )
-        )
+        ) {
             logging.error(
                 `Le fichier principal du module ${folderName} est introuvable.`
             );
+            return;
+        }
 
         // Ajoutez le module et ses dépendances à la liste
         modulesList.push({
             name: moduleConfig.name,
             path: `${folderName}/${moduleConfig.main}.js`,
-            dependencies: moduleConfig.modulesDependencies || []
+            dependencies: moduleConfig.modulesDependencies || [],
         });
     });
 

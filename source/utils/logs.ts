@@ -31,7 +31,7 @@ export default class LogManager {
     constructor() {
         this.logDate = new Date();
         this.logFile =
-            moment(this.logDate).format('DD-MM-YYYY_HH-mm-ss') + '.log';
+            `${moment(this.logDate).format('DD-MM-YYYY_HH-mm-ss')}.log`;
 
         this.checkLogFolder();
 
@@ -58,7 +58,7 @@ export default class LogManager {
      */
     private static removeANSI(message: string): string {
         return message.replace(
-            /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+            /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/gu,
             ''
         );
     }
@@ -69,7 +69,7 @@ export default class LogManager {
      * @param message Le message à formater.
      * @returns Le message formaté.
      */
-    private logData(
+    private static logData(
         level: 'LOG' | 'INFO' | 'WARN' | 'ERROR' | 'CRITICAL',
         message: string
     ): Omit<Log, 'args'> {
@@ -139,7 +139,7 @@ export default class LogManager {
         this.checkLogFolder();
 
         const log = {
-            ...this.logData('LOG', message),
+            ...LogManager.logData('LOG', message),
             args
         };
 
@@ -166,7 +166,7 @@ export default class LogManager {
         this.checkLogFolder();
 
         const log = {
-            ...this.logData('INFO', message),
+            ...LogManager.logData('INFO', message),
             args
         };
 
@@ -193,7 +193,7 @@ export default class LogManager {
         this.checkLogFolder();
 
         const log = {
-            ...this.logData('WARN', message),
+            ...LogManager.logData('WARN', message),
             args
         };
 
@@ -220,7 +220,7 @@ export default class LogManager {
         this.checkLogFolder();
 
         const log = {
-            ...this.logData('ERROR', message),
+            ...LogManager.logData('ERROR', message),
             args
         };
 
@@ -247,7 +247,7 @@ export default class LogManager {
         this.checkLogFolder();
 
         const log = {
-            ...this.logData('CRITICAL', String(message)),
+            ...LogManager.logData('CRITICAL', String(message)),
             args
         };
 

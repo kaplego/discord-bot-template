@@ -24,7 +24,7 @@ export default {
             }
         ]
     },
-    execute(interaction, client) {
+    execute(interaction) {
         interaction.reply({
             // Renvoyer un embed
             embeds: [

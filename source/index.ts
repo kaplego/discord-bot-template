@@ -11,7 +11,6 @@ import LogManager from './utils/logs';
 import { Discord, DiscordTypes } from './utils';
 import dotenv from 'dotenv';
 
-
 // Charger les variables de configuration
 dotenv.config();
 

@@ -5,12 +5,12 @@ export default {
     command: {
         name: 'Infos message'
     },
-    execute(interaction, client) {
+    execute(interaction) {
         interaction.reply({
             // Renvoyer un embed avec comme info si le message est épinglé
             embeds: [
                 new Discord.EmbedBuilder()
-                    .setTitle(`Le message sélectionné`)
+                    .setTitle('Le message sélectionné')
                     .setDescription(
                         `${
                             interaction.targetMessage.pinned

@@ -61,7 +61,7 @@ abstract interface Command<
  */
 declare interface SlashCommand
     extends Command<Discord.ChatInputCommandInteraction> {
-    command: Discord.ChatInputApplicationCommandData;
+    command: Omit<Discord.ChatInputApplicationCommandData, 'type'>;
 }
 
 /**
@@ -69,7 +69,7 @@ declare interface SlashCommand
  */
 declare interface MessageCommand
     extends Command<Discord.MessageContextMenuCommandInteraction> {
-    command: Discord.MessageApplicationCommandData;
+    command: Omit<Discord.MessageApplicationCommandData, 'type'>;
 }
 
 /**
@@ -77,7 +77,7 @@ declare interface MessageCommand
  */
 declare interface UserCommand
     extends Command<Discord.UserContextMenuCommandInteraction> {
-    command: Discord.UserApplicationCommandData;
+    command: Omit<Discord.UserApplicationCommandData, 'type'>;
 }
 
 declare interface BaseComponent<I extends Discord.AnyComponentInteraction> {
