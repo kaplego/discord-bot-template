@@ -89,10 +89,12 @@ export async function loadCommands(): Promise<void> {
                     | Bot.MessageCommand
                     | Bot.UserCommand;
 
+                let data;
+
                 // Ajouter la commande dans la liste correspondante à son type
                 switch (command_type) {
                     case 'chat_input':
-                        const cData = {
+                        data = {
                             ...(filedata as Bot.SlashCommand),
                             command: {
                                 ...filedata.command,
@@ -102,12 +104,12 @@ export async function loadCommands(): Promise<void> {
                         };
 
                         if (file.name.startsWith('$'))
-                            PrivateChatInputs.set(filedata.command.name, cData);
-                        else ChatInputs.set(filedata.command.name, cData);
+                            PrivateChatInputs.set(filedata.command.name, data);
+                        else ChatInputs.set(filedata.command.name, data);
 
                         break;
                     case 'message_action':
-                        const mData = {
+                        data = {
                             ...(filedata as Bot.MessageCommand),
                             command: {
                                 ...filedata.command,
@@ -119,26 +121,23 @@ export async function loadCommands(): Promise<void> {
                         if (file.name.startsWith('$'))
                             PrivateMessageActions.set(
                                 filedata.command.name,
-                                mData
+                                data
                             );
-                        else MessageActions.set(filedata.command.name, mData);
+                        else MessageActions.set(filedata.command.name, data);
 
                         break;
                     case 'user_action':
-                        const uData = {
+                        data = {
                             ...(filedata as Bot.UserCommand),
                             command: {
                                 ...filedata.command,
                                 type: DiscordTypes.ApplicationCommandType.User
                             } as Discord.UserApplicationCommandData
                         };
-                        
+
                         if (file.name.startsWith('$'))
-                            PrivateUserActions.set(
-                                filedata.command.name,
-                                uData
-                            );
-                        else UserActions.set(filedata.command.name, uData);
+                            PrivateUserActions.set(filedata.command.name, data);
+                        else UserActions.set(filedata.command.name, data);
 
                         break;
                     default:

@@ -1,5 +1,5 @@
 /** Boucle forEach async */
-export const asyncForEach = async function <T, R extends any>(
+export const asyncForEach = async function <T extends any, R extends any>(
     array: T[],
     callback: (value: T, index: number, array: T[]) => R | Promise<R>
 ) {

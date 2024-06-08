@@ -1,7 +1,7 @@
 import type { Modules } from '../../types';
 import { BUILD_DIR, MODULES_FOLDER, SOURCE_DIR } from '.';
 import modulesGlobalConfig from '../../modules.config';
-import { asyncForEach, fs } from '..';
+import { fs } from '..';
 import { logging } from '../..';
 
 interface PartialModule {
