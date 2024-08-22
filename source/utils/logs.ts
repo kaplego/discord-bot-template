@@ -74,7 +74,7 @@ export default class LogManager {
         message: string
     ): Omit<Log, 'args'> {
         const date = moment();
-        const dateString = date.format('DD-MM-YYYY HH:mm:ss:SSS ZZ');
+        const dateString = date.format('YYYY-MM-DD HH:mm:ss.SSS ZZ');
 
         return {
             level,

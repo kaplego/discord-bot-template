@@ -75,7 +75,7 @@ ws.addEventListener('message', (event) => {
 
     // Parcourt les journaux et ajoute chaque entrée de journal.
     logs.forEach((log) => {
-        addLogEntrie(log);
+        addLogEntry(log);
 
         // Fait défiler la fenêtre vers le bas pour afficher les nouveaux journaux.
         window.scrollTo({
@@ -90,7 +90,7 @@ ws.addEventListener('message', (event) => {
  * @param log Objet représentant une entrée de journal.
  * @returns L'élément <article> créé pour l'entrée de journal.
  */
-function addLogEntrie(log: HTMLLog): HTMLElement {
+function addLogEntry(log: HTMLLog): HTMLElement {
     // Sépare la chaîne de date en parties utilisables.
     const dateStrings = log.dateString.split(/-| |:/);
 

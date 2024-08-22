@@ -2,6 +2,7 @@ import express from 'express';
 import ws from 'ws';
 import { logging } from '../..';
 import Convert from 'ansi-to-html';
+import { inspect } from 'util';
 
 const convert = new Convert({
     colors: {
@@ -67,7 +68,7 @@ websocket.on('connection', (client) => {
         if (data.toString() === 'getLogs')
             client.send(
                 JSON.stringify(
-                    [
+                    inspect([
                         ...Object.values(
                             Object.fromEntries(
                                 [...logging.logs.entries()].map(
@@ -88,7 +89,7 @@ websocket.on('connection', (client) => {
                                 )
                             )
                         )
-                    ],
+                    ]),
                     (key, value) =>
                         typeof value === 'bigint' ? value.toString() : value
                 )

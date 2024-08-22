@@ -3,7 +3,7 @@
         "slash": {
             "exemple": {
                 "name": "exemple",
-                "description": "Une commande slash classique.",
+                "description": "Une commande slash d'exemple.",
                 "options": {
                     "autocomplete": {
                         "name": "autocompletition",
