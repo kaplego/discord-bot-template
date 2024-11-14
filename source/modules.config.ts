@@ -1,8 +1,8 @@
-import type { Modules } from "./types";
+import type { Modules } from './types';
 
 export default [
-    {
-        name: 'weblogs',
-        enabled: true
-    }
+	{
+		name: 'weblogs',
+		enabled: false,
+	},
 ] as Modules.Config;

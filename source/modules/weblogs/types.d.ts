@@ -1,7 +1,7 @@
 declare const logData: {
-    [key: number]: Log;
+	[key: number]: Log;
 };
 
 type HTMLLog = Log & {
-    htmlMessage: string;
+	htmlMessage: string;
 };

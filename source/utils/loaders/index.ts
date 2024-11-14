@@ -17,13 +17,13 @@ const AUTOCOMPLETE_FOLDER = process.env.AUTOCOMPLETE_FOLDER || 'autocomplete';
 const MODULES_FOLDER = process.env.MODULES_FOLDER || 'modules';
 
 export {
-    BUILD_DIR,
-    SOURCE_DIR,
-    EVENTS_FOLDER,
-    COMMANDS_FOLDER,
-    COMPONENTS_FOLDER,
-    AUTOCOMPLETE_FOLDER,
-    MODULES_FOLDER
+	BUILD_DIR,
+	SOURCE_DIR,
+	EVENTS_FOLDER,
+	COMMANDS_FOLDER,
+	COMPONENTS_FOLDER,
+	AUTOCOMPLETE_FOLDER,
+	MODULES_FOLDER,
 };
 
 export * from './events';
@@ -36,5 +36,5 @@ export * from './modules';
  * Démmarer le bot.
  */
 export async function init(client: Discord.Client) {
-    client.login(process.env.BOT_TOKEN);
+	client.login(process.env.BOT_TOKEN);
 }

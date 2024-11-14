@@ -1,11 +1,11 @@
 /** Boucle forEach async */
 export const asyncForEach = async function <T extends any, R extends any>(
-    array: T[],
-    callback: (value: T, index: number, array: T[]) => R | Promise<R>
+	array: T[],
+	callback: (value: T, index: number, array: T[]) => R | Promise<R>
 ) {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-    }
+	for (let index = 0; index < array.length; index++) {
+		await callback(array[index], index, array);
+	}
 };
 
 export * as Discord from 'discord.js';

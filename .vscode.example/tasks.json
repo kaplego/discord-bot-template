@@ -3,28 +3,47 @@
 	"tasks": [
 		{
 			"icon": {
-				"color": "terminal.ansiGreen",
-				"id": "new-folder"
+				"color": "terminal.ansiYellow",
+				"id": "server-process"
 			},
-			"type": "typescript",
-			"tsconfig": "tsconfig.json",
-			"problemMatcher": [
-				"$tsc"
-			],
+			"type": "npm",
+			"script": "build",
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
-			"label": "tsc: build - tsconfig.json",
-			"presentation": {
-				"echo": true,
-				"reveal": "silent",
-				"focus": false,
-				"panel": "dedicated",
-				"showReuseMessage": false,
-				"clear": true,
-				"revealProblems": "onProblem",
+			"problemMatcher": [],
+			"label": "npm: build",
+			"detail": "tsc"
+		},
+		{
+			"icon": {
+				"color": "terminal.ansiGreen",
+				"id": "beaker"
+			},
+			"type": "npm",
+			"script": "lint",
+			"problemMatcher": [],
+			"label": "npm: lint",
+			"detail": "eslint",
+			"group": {
+				"kind": "test",
+				"isDefault": true
 			}
+		},
+		{
+			"icon": {
+				"color": "terminal.ansiBlue",
+				"id": "debug-console"
+			},
+			"problemMatcher": [],
+			"label": "Lint & Build",
+			"detail": "Run all",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"npm: lint",
+				"npm: build"
+			]
 		}
 	]
 }
